@@ -1,4 +1,21 @@
-.error{
+.error {
     color: red;
-   float: left;
+    float: left;
+}
+
+.user-image {
+    height: 150px;
+    object-fit: fill;
+}
+
+.request-user {
+    height: 150px;
+    object-fit: fill;
+    margin-left: 50px;
+}
+
+.search {
+    bottom: 0;
+    position: fixed;
+    
 }

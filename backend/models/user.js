@@ -11,7 +11,7 @@ var User = new Schema({
         type: String,
         lowercase: true,
         trim: true,
-        required: [true,"lastName is required"]
+        required: [true, "lastName is required"]
     },
     email: {
         type: String,
@@ -24,10 +24,17 @@ var User = new Schema({
     password: {
         type: String,
         trim: true,
-        required:[ true, "password is required"]
+        required: [true, "password is required"]
     },
-    photoURL: String 
-    
+    photoURL: String,
+    resetToken: String,
+    friends: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: "user",
+        }
+    ]
+
 });
 
 var User = mongoose.model('user', User);

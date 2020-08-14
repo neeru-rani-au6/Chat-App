@@ -9,12 +9,11 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
+//import ListItemText from '@material-ui/core/ListItemText';
 import HomeIcon from '@material-ui/icons/Home';
 import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 import PersonIcon from '@material-ui/icons/Person';
@@ -26,6 +25,7 @@ import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
+import Ouricon from '../assets/images/ouricon.jpg';
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -46,12 +46,6 @@ const useStyles = makeStyles((theme) => ({
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.enteringScreen,
         }),
-    },
-    menuButton: {
-        marginRight: 36,
-    },
-    hide: {
-        display: 'none',
     },
     drawer: {
         width: drawerWidth,
@@ -181,19 +175,8 @@ function MiniDrawer(props) {
             >
                 <Toolbar style={{ justifyContent: 'space-between' }}>
                     <div className={classes.menuLogo}>
-                        <IconButton
-                            color="inherit"
-                            aria-label="open drawer"
-                            onClick={handleDrawerOpen}
-                            edge="start"
-                            className={clsx(classes.menuButton, {
-                                [classes.hide]: open,
-                            })}
-                        >
-                            <MenuIcon />
-                        </IconButton>
-                        <Typography variant="h6" noWrap>
-                            Our Icon
+                        <Typography variant="h6" noWrap style={{ width: "30px", height: "30px", borderRadius: "50%" }}>
+                            <img src={Ouricon} alt="user" />
                         </Typography>
                         <div className={classes.search} style={{ marginLeft: "70px" }}>
                             <div className={classes.searchIcon}>
@@ -264,21 +247,25 @@ function MiniDrawer(props) {
                 <Divider />
                 <List>
                     <ListItem button>
-                        <ListItemIcon>
-                            <Link to="/home" style={{ textDecoration: "none" }}>
+                        <Link to="/home" style={{ textDecoration: "none" }}>
+                            <ListItemIcon>
                                 <HomeIcon />
-                            </Link>
-                        </ListItemIcon>
-                        <ListItemText>Home</ListItemText>
-
+                            </ListItemIcon>
+                        </Link>
                     </ListItem>
                     <ListItem button>
-                        <ListItemIcon><PersonIcon /> </ListItemIcon>
-                        <ListItemText>Friends</ListItemText>
+                        <Link to="/friend" style={{ textDecoration: "none" }}>
+                            <ListItemIcon>
+                                <PersonIcon />
+                            </ListItemIcon>
+                        </Link>
                     </ListItem>
                     <ListItem button>
-                        <ListItemIcon><PeopleAltIcon /> </ListItemIcon>
-                        <ListItemText>Group</ListItemText>
+                        <Link to="/group" style={{ textDecoration: "none" }}>
+                            <ListItemIcon>
+                                <PeopleAltIcon />
+                            </ListItemIcon>
+                        </Link>
                     </ListItem>
                 </List>
             </Drawer>

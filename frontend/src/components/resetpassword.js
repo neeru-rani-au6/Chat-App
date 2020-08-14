@@ -9,10 +9,10 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import { forgotPassword } from '../redux/action/user';
-import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { connect } from 'react-redux';
+import { changePassword } from '../redux/action/user';
 const useStyles = makeStyles((theme) => ({
     paper: {
         marginTop: theme.spacing(8),
@@ -36,21 +36,24 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-
-
-const SignIn = (props) => {
+const Resetpassword = (props) => {
     const classes = useStyles();
-    //const user = useSelector(state => state.userState);
+   // const user = useSelector(state => state.userState);
     const history = useHistory();
     const dispatch = useDispatch();
 
     useEffect(() => {
-        console.log("props",props);
+        const result = props.match.params.email
+        console.log(result);
     }, []);
     const [state, setState] = useState({
-        email: "",
-        isSubmitting: false
+        resetToken: "",
+        password: "",
+        isSubmitting: false,
+        email: props.match.params.email
     });
+
+
     const handleChange = (key, value) => {
         setState({
             ...state,
@@ -59,43 +62,59 @@ const SignIn = (props) => {
     }
 
     const reset = async (e) => {
-        console.log('state',state)
         e.preventDefault();
         setState({ ...state, isSubmitting: true });
-        await dispatch(forgotPassword(state));
+
+        await dispatch(changePassword(state));
         setState({ ...state, isSubmitting: false });
-        console.log(props.useremail.error)
-        if (!props.useremail.error) {
-            history.push('/Resetpassword/'+state.email);
+        if (!props.user.error) {
+            history.push('/');
         }
     }
     return (
         <Container component="main" maxWidth="xs">
+
             <CssBaseline />
             <div className={classes.paper}>
                 <Avatar className={classes.avatar}>
                     <LockOutlinedIcon />
                 </Avatar>
                 <Typography component="h1" variant="h5">
-                    Forgot Password
+                    Reset Password
         </Typography>
                 <form className={classes.form} noValidate onSubmit={reset}>
+                    <Grid>
+                        <h2> {props.match.params.email}</h2>
+                    </Grid>
                     <TextField
                         variant="outlined"
                         margin="normal"
                         required
                         fullWidth
-                        id="email"
-                        label="Email Address"
-                        name="email"
-                        autoComplete="email"
-                        autoFocus
-                        value={state.email}
-                        onChange={(e) => handleChange("email", e.target.value)}
+                        name="resetToken"
+                        label="resetToken"
+                        type="resetToken"
+                        id="resetToken"
+                        autoComplete="resetToken"
+                        value={state.resetToken}
+                        onChange={(e) => handleChange("resetToken", e.target.value)}
+                    />
+                    <TextField
+                        variant="outlined"
+                        margin="normal"
+                        required
+                        fullWidth
+                        name="password"
+                        label="Password"
+                        type="password"
+                        id="password"
+                        autoComplete="current-password"
+                        value={state.password}
+                        onChange={(e) => handleChange("password", e.target.value)}
                     />
                     <Grid>
-                        <div className="error">
-                            {props.useremail.error}
+                    <div className="error">
+                            {props.user.error}
                         </div>
                     </Grid>
                     <Button
@@ -104,9 +123,8 @@ const SignIn = (props) => {
                         variant="contained"
                         color="primary"
                         className={classes.submit}
-                        disabled={state.isSubmitting}
                     >
-                        Send Reset Link
+                        Change Password
           </Button>
                     <Grid container>
                         <Grid item xs>
@@ -125,10 +143,10 @@ const SignIn = (props) => {
 }
 
 const mapStateToProps = (state) => {
-    //console.log(state)
+    console.log(state)
     return {
-        useremail: state.userState
+        user: state.userState
     }
 }
 
-export default connect(mapStateToProps, { forgotPassword })(SignIn);
+export default connect(mapStateToProps, { changePassword })(Resetpassword);

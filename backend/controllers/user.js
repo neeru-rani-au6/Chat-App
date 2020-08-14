@@ -1,6 +1,7 @@
 var User = require("../models/user");
 var bcrypt = require('bcrypt');
 var { createToken } = require('../middleware/authentication');
+var sendMail = require('../services/email');
 module.exports = {
     async userRegister(req, res) {
         try {
@@ -58,7 +59,7 @@ module.exports = {
     },
     async getallUser(req, res) {
         try {
-            var result = await User.find();
+            var result = await User.find({_id:{$ne:req.user.id}});
             res.json(result)
         } catch (error) {
             console.log(error)
@@ -78,11 +79,60 @@ module.exports = {
     },
     async updateUser(req, res) {
         try {
-            var result = await User.updateOne({ ...req.body }, { _id: req.params.id })
+            var result = await User.updateOne({ _id: req.params.id }, { ...req.body })
             res.json(result)
         } catch (error) {
             console.log(error)
             res.status(400).send(error)
+        }
+    },
+    async forgotPassword(req, res) {
+        try {
+            var email = req.body.email;
+            var token = Math.floor((Math.random() * 1000000) + 1);
+            var user = await User.findOne({ email })
+            if (user) {
+                await sendMail({
+                    to: email,
+                    subject: 'Forgot Password',
+                    body: `<h4>Hi ${user.firstName}</h4>
+                            <p>You have requested for forgot password, your otp is ${token} to reset password <p>
+                            <br /> <br />
+                            <p>regards <br /> Chat App Team</p>`
+                });
+                await User.updateOne({ _id: user._id }, { resetToken: token });
+
+                res.json({ "message": "otp is sent successfullt" });
+
+            } else {
+                res.status(400).json({ "error": "email not found" })
+            }
+        } catch (error) {
+
+            console.log(error)
+        }
+    },
+    async Changepassword(req, res) {
+        try {
+            const resetToken = req.body.resetToken;
+            const email = req.body.email;
+            const newPassword = req.body.password
+            console.log(req.body);
+
+            console.log(resetToken)
+            const user = await User.findOne({ email });
+            console.log(user.resetToken)
+            console.log(user)
+            if (resetToken !== user.resetToken) {
+                return res.status(404).json({ error: "INVALID OTP, check your email again" });
+            }
+            const passwordnew = await bcrypt.hash(newPassword, 10)
+            console.log(passwordnew)
+            await User.updateOne({ _id: user._id }, { password: passwordnew });
+            return res.status(200).json({ message: "You have successfully changed your password" })
+        } catch (error) {
+            console.log(error)
+
         }
     }
 }

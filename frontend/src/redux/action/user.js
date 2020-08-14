@@ -1,4 +1,4 @@
-import { LOGIN, LOGOUT, REGISTER, ALLUSER } from '../type';
+import { LOGIN, LOGOUT, REGISTER, ALLUSER, FORGOTPASSWORD, CHANGEPASSWORD } from '../type';
 import axios from 'axios';
 
 export const registerUser = (user) => async dispatch => {
@@ -12,8 +12,10 @@ export const registerUser = (user) => async dispatch => {
                 lastName: user.lastName,
                 email: user.email,
                 password: user.password,
-                photoURL: user.photoURL
-            }
+            },
+            // headers: {
+            //     'content-type': 'multipart/form-data'
+            // }
 
         }
         );
@@ -92,11 +94,70 @@ export const allUser = () => async dispatch => {
         const { data } = await axios(`/users/alluser`)
         dispatch({
             type: ALLUSER,
-            payload: { users : data}
+            payload: { users: data }
         })
         //console.log(data)
     } catch (error) {
         console.log(error)
+
+    }
+}
+
+export const forgotPassword = (user) => async dispatch => {
+    //console.log('user',user)
+    try {
+        const { data } = await axios({
+            method: "post",
+            url: `/users/forgotpassword`,
+            data: {
+                email: user.email
+            }
+        });
+        //console.log("data",data)
+        dispatch({
+            type: FORGOTPASSWORD,
+            payload: { useremail: user.email, info: data.message }
+        })
+
+    } catch (error) {
+        console.log('errtyu', error.response.data)
+        dispatch({
+            type: FORGOTPASSWORD,
+            payload: {
+                error: error.response.data.error,
+                info: null
+            }
+        })
+    }
+}
+
+export const changePassword = (user) => async dispatch => {
+    console.log("user", user)
+    try {
+        const { data } = await axios({
+            method: "post",
+            url: `/users/Changepassword`,
+            data: {
+                resetToken: user.resetToken,
+                password: user.password,
+                email: user.email
+            }
+        });
+        console.log("data", data)
+        dispatch({
+            type: CHANGEPASSWORD,
+            payload: { user: data, error: null }
+        })
+
+    } catch (error) {
+        console.log(error.response.data)
+        dispatch({
+            type: CHANGEPASSWORD,
+            payload: {
+                error: error.response.data.error,
+                info: null
+            }
+        })
 
     }
 }

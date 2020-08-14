@@ -60,7 +60,7 @@ export default function Register() {
     await dispatch(registerUser(state));
     setState({ ...state, isSubmitting: false });
     if (!user.error) {
-      history.push('/login');
+      history.push('/');
     }
   }
   // useEffect(() => {
