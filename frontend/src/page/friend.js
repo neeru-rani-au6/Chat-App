@@ -11,8 +11,10 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 import Slide from '@material-ui/core/Slide';
-import Button from '@material-ui/core/Button';
-
+import MenuIcon from '@material-ui/icons/Menu';
+import IconButton from '@material-ui/core/IconButton';
+import SendIcon from '@material-ui/icons/Send';
+import { Link } from 'react-router-dom';
 function HideOnScroll(props) {
     const { children, window } = props;
     const trigger = useScrollTrigger({ target: window ? window() : undefined });
@@ -40,21 +42,35 @@ class Friends extends Component {
                         <Paper style={{ padding: '5px 5px 20px 5px' }}>
                             <div style={{ textAlign: "center", maxWidth: "300px" }} >
                                 {this.state.friends && this.state.friends.map((item) => (
-                                    <Card key={item._id} style={{ display: "flex", margin: "10px" }}>
-                                        <Grid item xs={3} style={{ float: "left" }}>
-                                            <img alt="user" src={item.photoURL || userimage} style={{ width: "40px", height: "40px", borderRadius: "50px" }} />
-                                        </Grid>
-                                        <Grid item xs={3} style={{ float: "right", marginTop: "10px" }}>
-                                            {item.firstName + " " + item.lastName}
-                                        </Grid>
-                                    </Card>
+                                    <Link key={item._id} to={item.id}>
+                                        <Card style={{ display: "flex", margin: "10px" }}>
+                                            <Grid item xs={3} style={{ float: "left" }}>
+                                                <img alt="user" src={item.photoURL || userimage} style={{ width: "40px", height: "40px", borderRadius: "50px" }} />
+                                            </Grid>
+                                            <Grid item xs={3} style={{ float: "right", marginTop: "10px" }}>
+                                                {item.firstName + " " + item.lastName}
+                                            </Grid>
+                                        </Card>
+                                    </Link>
                                 ))}
                             </div>
                         </Paper>
                     </Grid>
                     <Grid item xs={8} style={{ marginLeft: "80px" }}>
-                        <Grid className="search" style={{ width: "60%" }}>
+                        <Grid >
                             <div>
+                                <AppBar position="static">
+                                    <Toolbar variant="dense">
+                                        <IconButton edge="start" color="inherit" aria-label="menu">
+                                            <MenuIcon />
+                                        </IconButton>
+                                        <Typography variant="h6" color="inherit">
+                                            Photos
+                                         </Typography>
+                                    </Toolbar>
+                                </AppBar>
+                            </div>
+                            <div className="search" style={{ width: "62%" }}>
                                 <TextField
                                     id="outlined-full-width"
                                     style={{ margin: 8 }}
@@ -67,9 +83,6 @@ class Friends extends Component {
                                     variant="outlined"
                                     style={{ float: "left" }}
                                 />
-                                <Button style={{ float: "right" }} variant="contained" color="primary" href="#contained-buttons">
-                                    Link
-                                  </Button>
                             </div>
                         </Grid>
                     </Grid>
