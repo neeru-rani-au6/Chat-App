@@ -31,6 +31,7 @@ const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
+        height: "70px"
     },
     appBar: {
         zIndex: theme.zIndex.drawer + 1,
@@ -143,9 +144,6 @@ function MiniDrawer(props) {
     const theme = useTheme();
     const history = useHistory();
     const [open, setOpen] = React.useState(false);
-    const handleDrawerOpen = () => {
-        setOpen(true);
-    };
     const handleDrawerClose = () => {
         setOpen(false);
     };
@@ -175,8 +173,8 @@ function MiniDrawer(props) {
             >
                 <Toolbar style={{ justifyContent: 'space-between' }}>
                     <div className={classes.menuLogo}>
-                        <Typography variant="h6" noWrap style={{ width: "30px", height: "30px", borderRadius: "50%" }}>
-                            <img src={Ouricon} alt="user" />
+                        <Typography variant="h6" noWrap style={{ width: "50px", height: "50px", borderRadius: "50%" }}>
+                            <img src={Ouricon} alt="user" style={{width:"100%"}}/>
                         </Typography>
                         <div className={classes.search} style={{ marginLeft: "70px" }}>
                             <div className={classes.searchIcon}>

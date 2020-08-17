@@ -74,7 +74,7 @@ export const loginUser = (user) => async dispatch => {
 
 export const logout = () => async dispatch => {
     try {
-        const { data } = await axios({
+        await axios({
             method: "delete",
             url: `/users/logout`
         });

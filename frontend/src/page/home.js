@@ -16,6 +16,8 @@ import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import CheckIcon from '@material-ui/icons/Check';
 import ClearIcon from '@material-ui/icons/Clear';
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 class Home extends Component {
     state = {
         users: null,
@@ -56,6 +58,18 @@ class Home extends Component {
 
         }
     }
+    acceptGroupRequest = async (id, groupId) => {
+        await this.props.updatetRequest({
+            isAccepted: true,
+            id,
+            groupId
+        });
+        this.setState({
+            snackbarOpen: true,
+            snackbarMessage: "Accept request successfully"
+        });
+        await this.props.allRequest();
+    }
     Accept = async (id, friend) => {
         await this.props.updatetRequest({
             isAccepted: true,
@@ -66,6 +80,7 @@ class Home extends Component {
             snackbarOpen: true,
             snackbarMessage: "Accept request successfully"
         });
+        await this.props.allRequest();
 
     }
     Reject = async (id) => {
@@ -78,7 +93,7 @@ class Home extends Component {
             snackbarMessage: "Reject request successfully",
             snackbarSeverity: 'error'
         })
-
+        await this.props.allRequest();
 
     }
 
@@ -101,61 +116,90 @@ class Home extends Component {
         return (
             <div style={{ marginLeft: "100px" }}>
                 <Header />
-                {/* {this.state.users ? */}
-                <div className="row">
-                    <Grid container >
-                        <Grid container item spacing={3} xs={12} sm={9}>
-                            {this.state.users && this.state.users.map((item) => (
-                                <Grid item xs={12} sm={4} key={item._id}>
-                                    <Card style={{ maxWidth: "200px" }} className="col-2">
-                                        <CardMedia
-                                            className="user-image"
-                                            component="img"
-                                            image={item.photoURL || userimage}
-                                            title="user iamge"
-                                        />
-                                        <CardActions style={{ justifyContent: 'center', flexDirection: 'column' }}>
-                                            <Typography style={{ fontWeight: "bold" }}>
-                                                {item.firstName + " " + item.lastName}
-                                            </Typography>
-                                            <Button variant="outlined" color="primary" onClick={() => this.connect(item._id)}>connect</Button>
-                                        </CardActions>
+                {this.state.users ?
+                    <div className="row">
+                        <Grid container >
+                            <Grid container item spacing={3} xs={12} sm={9}>
+                                {this.state.users && this.state.users.map((item) => (
+                                    <Grid item xs={12} sm={4} key={item._id}>
+                                        <Card style={{ maxWidth: "200px" }} className="col-2">
+                                            <CardMedia
+                                                className="user-image"
+                                                component="img"
+                                                image={item.photoURL || userimage}
+                                                title="user iamge"
+                                            />
+                                            <CardActions style={{ justifyContent: 'center', flexDirection: 'column' }}>
+                                                <Typography style={{ fontWeight: "bold" }}>
+                                                    {item.firstName + " " + item.lastName}
+                                                </Typography>
+                                                <Button variant="outlined" color="primary" onClick={() => this.connect(item._id)}>connect</Button>
+                                            </CardActions>
 
-                                    </Card>
-                                </Grid>
-                            ))}
-
-                        </Grid>
-                        <Grid item xs={12} sm={3}>
-                            <Paper style={{ padding: '5px 5px 20px 5px' }}>
-                                <div style={{ textAlign: "center", maxWidth: "300px" }} >
-                                    <h3>Requests</h3>
-                                    {this.props.request.requests && this.props.request.requests.map((item) => (
-                                        <Card style={{ display: "flex", margin: "10px" }} key={item._id}>
-                                            <Grid item xs={3} style={{ float: "left" }}>
-                                                <img alt="user" src={item.sender.photoURL || userimage} style={{ width: "40px", height: "40px", borderRadius: "50px" }} />
-                                            </Grid>
-                                            <Grid item xs={3} style={{ float: "right", marginTop: "10px" }}>
-                                                {item.sender.firstName + " " + item.sender.lastName}
-                                            </Grid>
-                                            <Grid item xs={3} style={{ float: "right", marginTop: "5px" }}>
-                                                <IconButton aria-label="delete" color="primary" onClick={() => this.Accept(item._id, item.sender._id)}>
-                                                    <CheckIcon />
-                                                </IconButton>
-                                            </Grid>
-                                            <Grid item xs={3} style={{ float: "right", marginTop: "5px" }}>
-                                                <IconButton aria-label="delete" color="secondary" onClick={() => this.Reject(item._id)}>
-                                                    <ClearIcon />
-                                                </IconButton>
-                                            </Grid>
                                         </Card>
-                                    ))}
-                                </div>
+                                    </Grid>
+                                ))}
 
-                            </Paper>
+                            </Grid>
+                            <Grid item xs={12} sm={3}>
+                                <Paper style={{ padding: '5px 5px 20px 5px' }}>
+                                    <div style={{ textAlign: "center", maxWidth: "300px" }} >
+                                        <h3>Requests</h3>
+                                        {this.props.request.requests && this.props.request.requests.map((item) => (
+                                            <Card style={{ display: "flex", margin: "10px" }} key={item._id}>
+                                                {item.sender &&
+                                                    <>
+                                                        <Grid item xs={3} style={{ float: "left" }}>
+                                                            <img alt="user" src={item.sender.photoURL || userimage} style={{ width: "40px", height: "40px", borderRadius: "50px" }} />
+                                                        </Grid>
+                                                        <Grid item xs={3} style={{ float: "right", marginTop: "10px" }}>
+                                                            {item.sender.firstName + " " + item.sender.lastName}
+                                                        </Grid>
+
+                                                        <Grid item xs={3} style={{ float: "right", marginTop: "5px" }}>
+                                                            <IconButton aria-label="delete" color="primary" onClick={() => this.Accept(item._id, item.sender._id)}>
+                                                                <CheckIcon />
+                                                            </IconButton>
+                                                        </Grid>
+                                                        <Grid item xs={3} style={{ float: "right", marginTop: "5px" }}>
+                                                            <IconButton aria-label="delete" color="secondary" onClick={() => this.Reject(item._id)}>
+                                                                <ClearIcon />
+                                                            </IconButton>
+                                                        </Grid>
+                                                    </>
+                                                }
+                                                {item.groupId &&
+                                                    <>
+                                                        <Grid item xs={3} style={{ float: "left" }}>
+                                                            <img alt="user" src={item.groupId.photoURL || userimage} style={{ width: "40px", height: "40px", borderRadius: "50px" }} />
+                                                        </Grid>
+                                                        <Grid item xs={3} style={{ float: "right", marginTop: "10px" }}>
+                                                            {item.groupId.groupName}
+                                                        </Grid>
+                                                        <Grid item xs={3} style={{ float: "right", marginTop: "5px" }}>
+                                                            <IconButton aria-label="delete" color="primary" onClick={() => this.acceptGroupRequest(item._id, item.groupId._id)}>
+                                                                <CheckIcon />
+                                                            </IconButton>
+                                                        </Grid>
+                                                        <Grid item xs={3} style={{ float: "right", marginTop: "5px" }}>
+                                                            <IconButton aria-label="delete" color="secondary" onClick={() => this.Reject(item._id)}>
+                                                                <ClearIcon />
+                                                            </IconButton>
+                                                        </Grid>
+                                                    </>
+                                                }
+                                            </Card>
+                                        ))}
+                                    </div>
+
+                                </Paper>
+                            </Grid>
                         </Grid>
-                    </Grid>
-                </div>
+                    </div>
+                    : <div className="loader">
+                        <CircularProgress />
+                    </div>
+                }
                 {this.showSnackbar()}
             </div>
         )

@@ -4,11 +4,14 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 require("./models/mongo");
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var requestRouter = require('./routes/request');
+var groupRouter = require("./routes/group");
+var chatRouter = require("./routes/chat");
 const cors = require("cors");
-const io = require('socket.io')
+
 var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -22,6 +25,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/request', requestRouter);
+app.use("/group", groupRouter);
+app.use('/chat', chatRouter);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));

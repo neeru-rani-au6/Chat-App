@@ -14,6 +14,7 @@ const requestReducer = (state = initalstate, action) => {
     switch (type) {
         case REQUEST:
             const newState = Object.assign(state, payload);
+            //console.log(newState)
             return newState;
         case ALLREQUEST:
             return Object.assign(state, payload);

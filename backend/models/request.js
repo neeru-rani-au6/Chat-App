@@ -6,14 +6,12 @@ var Request = new Schema(
         sender:
         {
             type: Schema.Types.ObjectId,
-            ref: "user",
-            unique: true
+            ref: "user"
         },
         receiver:
         {
             type: Schema.Types.ObjectId,
-            ref: "user",
-            unique: true
+            ref: "user"
         },
         isAccepted: {
             type: Boolean,
@@ -22,6 +20,10 @@ var Request = new Schema(
         isReject: {
             type: Boolean,
             default: false
+        },
+        groupId: {
+            type: Schema.Types.ObjectId,
+            ref: "group"
         }
     },
     { timestamps: true }

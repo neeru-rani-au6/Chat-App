@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -12,7 +12,7 @@ import Container from '@material-ui/core/Container';
 import { forgotPassword } from '../redux/action/user';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 const useStyles = makeStyles((theme) => ({
     paper: {
         marginTop: theme.spacing(8),
@@ -44,9 +44,6 @@ const SignIn = (props) => {
     const history = useHistory();
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        console.log("props",props);
-    }, []);
     const [state, setState] = useState({
         email: "",
         isSubmitting: false

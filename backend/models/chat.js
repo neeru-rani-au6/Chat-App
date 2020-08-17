@@ -1,40 +1,31 @@
 let mongoose = require("mongoose");
 let Schema = mongoose.Schema;
 
-var Chat = new Schema(
+var chat = new Schema(
     {
-        user: {
+        sender: {
             type: Schema.Types.ObjectId,
-            ref: "user",
-            required: true
+            ref: "user"
         },
-        friend: {
+        receiver: {
             type: Schema.Types.ObjectId,
-            ref: "user",
-            required: true
+            ref: "user"
         },
-        conversation: [
-            {
-                name: {
-                    type: String,
-                },
-                message: {
-                    type: String,
-                    trim: true
-                },
-                time: {
-                    type: String,
-                    trim: true
-                },
-                date: {
-                    type: String,
-                    trim: true
-                }
-            }
-        ],
+        groupId: {
+            type: Schema.Types.ObjectId,
+            ref: "group"
+        },
+        message: {
+            type: String,
+            trim: true
+        },
+        name:String,
+        photoURL:String
+    },{
+        timestamps:true
     }
 );
 
-let Chat = mongoose.model("chat", Chat);
+ var Chat = mongoose.model("chat", chat);
 
 module.exports = Chat;

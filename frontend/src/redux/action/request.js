@@ -3,6 +3,7 @@ import axios from 'axios';
 
 
 export const sendRequest = (user) => async dispatch => {
+    console.log(user)
     try {
         const { data } = await axios({
             method: "post",
@@ -75,7 +76,7 @@ export const updatetRequest = (friend) => async dispatch => {
 
 export const allFriends = () => async dispatch => {
     try {
-        const { data } = await axios(`/request/friend`);
+        const { data } = await axios(`/users/friend`);
         //console.log('data', data)
         dispatch({
             type: FRIENDS,

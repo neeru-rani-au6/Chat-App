@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -10,7 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { useHistory } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { connect } from 'react-redux';
 import { changePassword } from '../redux/action/user';
 const useStyles = makeStyles((theme) => ({
@@ -42,10 +42,6 @@ const Resetpassword = (props) => {
     const history = useHistory();
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        const result = props.match.params.email
-        console.log(result);
-    }, []);
     const [state, setState] = useState({
         resetToken: "",
         password: "",

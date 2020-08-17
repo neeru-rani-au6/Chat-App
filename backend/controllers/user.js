@@ -2,6 +2,7 @@ var User = require("../models/user");
 var bcrypt = require('bcrypt');
 var { createToken } = require('../middleware/authentication');
 var sendMail = require('../services/email');
+const { search } = require("../routes");
 module.exports = {
     async userRegister(req, res) {
         try {
@@ -59,7 +60,7 @@ module.exports = {
     },
     async getallUser(req, res) {
         try {
-            var result = await User.find({_id:{$ne:req.user.id}});
+            var result = await User.find({ _id: { $ne: req.user.id } });
             res.json(result)
         } catch (error) {
             console.log(error)
@@ -102,7 +103,7 @@ module.exports = {
                 });
                 await User.updateOne({ _id: user._id }, { resetToken: token });
 
-                res.json({ "message": "otp is sent successfullt" });
+                res.json({ "message": "otp is sent successfully" });
 
             } else {
                 res.status(400).json({ "error": "email not found" })
@@ -132,6 +133,31 @@ module.exports = {
             return res.status(200).json({ message: "You have successfully changed your password" })
         } catch (error) {
             console.log(error)
+
+        }
+    },
+    async searchUser(req, res) {
+        try {
+            console.log(req.body)
+            var result = await User.find({$or:[{firstName: { "$regex": req.body.searchQuery, "$options": "i" }},{lastName: { "$regex": req.body.searchQuery, "$options": "i" }}] }, { firstName: 1, lastName: 1 });
+            return res.json(result);
+        } catch (error) {
+           // console.log(error)
+            return res.status(400).json(error);
+        }
+    },
+    async findFriends(req, res) {
+        try {
+           if(req.user.id){
+               var result = await User.findOne({ _id: req.user.id }, { friends: 1, _id: 0 }).populate("friends").exec();
+               console.log(result)
+               return res.json(result)
+           }else{
+            res.status(400).json({ error: "Not a valid token" })
+           }
+        } catch (error) {
+            console.log(error)
+            res.status(400).json({ error: "Not able to find friend" })
 
         }
     }
