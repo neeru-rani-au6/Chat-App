@@ -4,6 +4,7 @@ module.exports = async (server) => {
     try {
         var io = require('socket.io').listen(server);
         io.on('connection', (socket) => {
+            console.log(socket.id)
             socket.on('join', (groupId) => {
                 socket.join(groupId);
             });
@@ -15,6 +16,7 @@ module.exports = async (server) => {
     } catch (error) {
         console.log('socket error',error);
     }
+    
 
 
 

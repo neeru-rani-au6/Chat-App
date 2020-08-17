@@ -5,12 +5,15 @@ var User = new Schema({
         type: String,
         lowercase: true,
         trim: true,
+        min:4,
         required: [true]
+       
     },
     lastName: {
         type: String,
         lowercase: true,
         trim: true,
+        min:4,
         required: [true, "lastName is required"]
     },
     email: {
@@ -24,6 +27,7 @@ var User = new Schema({
     password: {
         type: String,
         trim: true,
+        min: 8,
         required: [true, "password is required"]
     },
     photoURL: String,

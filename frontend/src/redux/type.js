@@ -12,3 +12,8 @@ export const CREATEGROUP = "CREATEGROUP";
 export const FINDGROUP = "FINDGROUP";
 export const SEARCHUSER = "SEARCHUSER";
 export const ALLMESSAGE = "ALLMESSAGE";
+
+
+
+export const GET_CHATS="GET_CHATS";
+export const AFTER_POST_MESSAGE="AFTER_POST_MESSAGE";

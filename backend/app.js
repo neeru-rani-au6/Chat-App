@@ -10,6 +10,7 @@ var usersRouter = require('./routes/users');
 var requestRouter = require('./routes/request');
 var groupRouter = require("./routes/group");
 var chatRouter = require("./routes/chat");
+var singleChatRouter=require("./routes/singleChat");
 const cors = require("cors");
 
 var app = express();
@@ -27,6 +28,7 @@ app.use('/users', usersRouter);
 app.use('/request', requestRouter);
 app.use("/group", groupRouter);
 app.use('/chat', chatRouter);
+app.use('/singleChat',singleChatRouter);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
