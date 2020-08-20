@@ -92,6 +92,8 @@ export default function Register() {
                 label="First Name"
                 value={state.firstName}
                 onChange={(e) => handleChange("firstName", e.target.value)}
+                error={state.firstName === "",state.firstName.length<=3}
+                helperText={state.firstName === "" ? 'Empty!' : ' ',state.firstName.length<=3 ? 'atleast  4 char !' : ' '}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -105,6 +107,8 @@ export default function Register() {
                 autoComplete="lname"
                 value={state.lastName}
                 onChange={(e) => handleChange("lastName", e.target.value)}
+                error={state.lastName === "",state.lastName.length<=3 }
+                helperText={state.lastName === "" ? 'Empty!' : ' ', state.lastName.length<=3 ? 'atleast  4 char !' : ' '}
               />
             </Grid>
             <Grid item xs={12}>
@@ -118,6 +122,9 @@ export default function Register() {
                 autoComplete="email"
                 value={state.email}
                 onChange={(e) => handleChange("email", e.target.value)}
+                error={!state.email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i)}
+                helperText={!state.email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i)?"Enter a valid email!":''}
+
               />
             </Grid>
             <Grid item xs={12}>
@@ -132,6 +139,8 @@ export default function Register() {
                 autoComplete="current-password"
                 value={state.password}
                 onChange={(e) => handleChange("password", e.target.value)}
+                error={state.password === "" && state.password.length<=5}
+                helperText={state.password === "" && state.password.length<=5 ? 'must not be empty and atleast  6 char !' : ' '}
               />
             </Grid>
             <Grid>
