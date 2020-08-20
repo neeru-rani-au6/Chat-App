@@ -10,6 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { useHistory } from 'react-router-dom';
+import Ouricon from '../assets/images/ouricon.jpg';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../redux/action/user';
 const useStyles = makeStyles((theme) => ({
@@ -65,9 +66,9 @@ export default function SignIn() {
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
+      <Typography component="h1" variant="h5">
+        <img src={Ouricon} alt="user" style={{width:"100%"}}/>
+        </Typography>
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>

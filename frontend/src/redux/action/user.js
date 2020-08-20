@@ -4,22 +4,25 @@ import axios from 'axios';
 export const registerUser = (user) => async dispatch => {
     // console.log(user)
     try {
+        const formData = new FormData();
+        formData.append("firstName", user.firstName);
+        formData.append("lastName",  user.lastName);
+        formData.append("email",  user.email);
+        formData.append("password",  user.password);
+        formData.append("photoURL", user.photoURL,user.photoURL.name);
+        
         const { data } = await axios({
             method: "post",
             url: '/users/register',
-            data: {
-                firstName: user.firstName,
-                lastName: user.lastName,
-                email: user.email,
-                password: user.password,
-            },
-            // headers: {
-            //     'content-type': 'multipart/form-data'
-            // }
-
-        }
+            data: formData,
+            headers: {
+                'content-type': 'multipart/form-data',
+                "Accept": "application/json",
+                 "type": "formData"
+             }
+            }
         );
-        //console.log(data,"1234")
+        console.log(data,"1234")
         dispatch({
             type: REGISTER,
             payload: {
@@ -161,3 +164,23 @@ export const changePassword = (user) => async dispatch => {
 
     }
 }
+
+/*
+ const formData = new FormData();
+
+      formData.append("name", name);
+      formData.append("email", email);
+      formData.append("password", password);
+      console.log(formData);
+      let res = await axios.post("/api/upload", formData);
+      setError(false);
+      handleClose();
+    } catch (error) {
+      setError(true);
+      console.error(error);
+    }
+  };
+
+
+
+*/

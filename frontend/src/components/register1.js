@@ -50,8 +50,42 @@ export default function Register() {
     email: "",
     password: "",
     photoURL:"",
-    isSubmitting: false
+    isSubmitting: false,
+    hasFirstNameError: true,
+    hasLastNameError: true,
+    hasEmailError: true,
+    hasPasswordError: true,
+    validate: false
+ 
   });
+  const toggleValidating=(validate)=> {
+    this.setState({ validate });
+  }
+   const validateForm=(e)=> {
+    e.preventDefault();
+    this.toggleValidating(true);
+    const {
+      // name,
+      // job,
+      // country,
+      // agreement,
+      // description,
+      hasNameError,
+      hasDescriptionError,
+      hasMovieError,
+      hasJobError,
+      hasAgreementError
+    } = this.state;
+    if (
+      !hasNameError &&
+      !hasDescriptionError &&
+      !hasMovieError &&
+      !hasJobError &&
+      !hasAgreementError
+    ) {
+      alert("All validated!");
+    }
+  }
   const handleChange = (key, value) => {
     setState({
       ...state,
@@ -94,6 +128,19 @@ export default function Register() {
                 label="First Name"
                 value={state.firstName}
                 onChange={(e) => handleChange("firstName", e.target.value)}
+                {/*validate={validate}*/}
+                validationCallback={res =>
+                    this.setState({[hasNameError]: res, [validate]: false })
+                  }
+                validationOption={{
+                    name: "Name",
+                    check: true, 
+                    required: true,
+                    min: 2, 
+                    max: 10,
+                    reg: /^\d{18}|\d{15}$/, 
+                    regMsg: 'failed in reg.test(${value})'
+                }}
               />
             </Grid>
             <Grid item xs={12} sm={6}>

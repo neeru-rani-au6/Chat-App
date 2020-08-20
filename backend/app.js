@@ -4,7 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 require("./models/mongo");
-
+require("dotenv").config();
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var requestRouter = require('./routes/request');
@@ -12,6 +12,7 @@ var groupRouter = require("./routes/group");
 var chatRouter = require("./routes/chat");
 var singleChatRouter=require("./routes/singleChat");
 var uploadImageVideo=require("./routes/UploadImageVideo");
+var photoUploadsRoute=require("./routes/photoUploads")
 const cors = require("cors");
 
 var app = express();
@@ -31,7 +32,7 @@ app.use("/group", groupRouter);
 app.use('/chat', chatRouter);
 app.use('/singleChat',singleChatRouter);
 app.use("/api/chat/uploadfiles",uploadImageVideo);
-
+app.use('/photoUploads', photoUploadsRoute);
 
 app.use('/uploads', express.static(path.join(__dirname, '/../uploads')));
 

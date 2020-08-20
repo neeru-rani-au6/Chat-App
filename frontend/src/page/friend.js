@@ -232,12 +232,12 @@ class Friends extends Component {
              <Toolbar>
                <Typography  variant="h6" noWrap>
                   <CardHeader
-                      avatar={<Avatar alt="user" src={""} /> }
-                         title={this.state.selctFriend?this.state.selectFriend.firstName:null}
+                      avatar={<Avatar alt="user" src={this.state.selectFriend.photoURL} /> }
+                         title={this.state.selectFriend?this.state.selectFriend.firstName:null}
                     />
                 </Typography>    
                 <Tooltip title="Share documents" aria-label="add">
-                        <Fab size="small" style={{ marginLeft: "12px" }}>
+                        <Fab size="small" style={{  marginLeft: "450px" }}>
                         <Button onClick={this.handleOpen.bind(this)}>
                          <AttachmentIcon />
                          </Button>

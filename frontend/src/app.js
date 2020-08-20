@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Login from './components/login';
-import Register from './components/register';
+import Register from './components/register1';
 import forgotPassword from './components/forgotPassword';
 import Home from './page/home';
 //import Header from './components/header';

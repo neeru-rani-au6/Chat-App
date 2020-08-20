@@ -5,11 +5,19 @@ var sendMail = require('../services/email');
 const { search } = require("../routes");
 module.exports = {
     async userRegister(req, res) {
-        try {
-            req.body.password = await bcrypt.hash(req.body.password, 10);
-            await User.create({ ...req.body });
+        console.log("in reg",req.body)
+        console.log("in reg",req.file)
+
+        
+            try {
+           if (req.file && req.file.path) {
+              req.body.password = await bcrypt.hash(req.body.password, 10);
+              req.body.photoURL =  req.file.path;
+              console.log(req.body)
+             await User.create({ ...req.body });
             return res.json({ success: true, message: 'user register successfully' })
-        } catch (error) {
+        }
+        }     catch (error) {
             console.log(error)
             if (error.name === "MongoError") {
                 return res.status(400).json({ message: error.message });
