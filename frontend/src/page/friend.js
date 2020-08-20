@@ -185,7 +185,7 @@ class Friends extends Component {
     };
     render() {
         return (
-            <div style={{ marginLeft: "100px" }}>
+            <div className="backgrnd" style={{ marginLeft: "100px" }}>
                 <Header />
                 {this.state.friends ?
                     <Grid container >
@@ -194,7 +194,7 @@ class Friends extends Component {
                                 <Grid container direction="column" alignItems="flex-start">
                                     {this.state.friends && this.state.friends.map((item) => (
                                         <Grid item key={item._id} style={{ margin: '10px 0' }}>
-                                            <Card onClick={() => this.handleFrndChat(item)} style={this.state.selectFriend && this.state.selectFriend._id === item._id ? { backgroundColor: '#ccc' } : { cursor: 'pointer' }}>
+                                            <Card  className="backgrnd" onClick={() => this.handleFrndChat(item)} style={this.state.selectFriend && this.state.selectFriend._id === item._id ? { backgroundColor: '#bbb' } : { cursor: 'pointer' }}>
                                                 <CardHeader
                                                     avatar={
                                                         <Avatar alt="user" src={item.photoURL || userimage} />
@@ -202,7 +202,7 @@ class Friends extends Component {
                                                     title={item.firstName + " " + item.lastName}
                                                     action={
                                                         <span className='unread'>
-                                                            {item?.unread > 0 && item.unread}
+                                                            {item.unread > 0 && item.unread}
                                                         </span>
                                                     }
                                                     subheader={new Date(item.createdAt).toLocaleDateString() + ' ' + new Date(item.createdAt).toLocaleTimeString()}
@@ -216,7 +216,7 @@ class Friends extends Component {
                         <Grid item sm={9}>
                             {!this.state.selectFriend ?
                                 <div>
-                                    <h1>Click on any friend for chatting.</h1>
+                                    <h1>Click on any friend to start conversation.</h1>
                                 </div>
                                 :
                                 <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -248,7 +248,7 @@ class Friends extends Component {
                                             {this.state.messages.map(item => (
                                                 <Grid item xs={12} key={item._id} style={{ padding: '8px' }}>
                                                     <div className="message">
-                                                        <Avatar className="message-photo" src={item.phtoURL || userimage} alt="message" />
+                                                        <Avatar className="message-photo" src={item.photoURL || userimage} alt="message" />
                                                         <div className="message-name">{item.name}</div>
                                                     </div>
                                                     {item.file ?

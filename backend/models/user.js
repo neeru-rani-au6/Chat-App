@@ -5,12 +5,16 @@ var User = new Schema({
         type: String,
         lowercase: true,
         trim: true,
-        required: [true]
+        validate: /[a-z]/,
+        min: [4, 'firstName must be atleast 4 character long '],
+        required: [true,"FirstName is required"]
     },
     lastName: {
         type: String,
         lowercase: true,
         trim: true,
+        validate: /[a-z]/,
+        min: [4, 'firstName must be atleast 4 character long '],
         required: [true, "lastName is required"]
     },
     email: {
@@ -24,6 +28,7 @@ var User = new Schema({
     password: {
         type: String,
         trim: true,
+        min: [8, 'password must be atleast 8 character long '],
         required: [true, "password is required"]
     },
     photoURL: String,

@@ -6,6 +6,9 @@ const validator = require('validator');
 module.exports = {
     async userRegister(req, res) {
         try {
+            if (req.file && req.file.path) {
+                req.body.photoURL =  req.file.path;
+              }
             req.body.password = await bcrypt.hash(req.body.password, 10);
             await User.create({ ...req.body });
             return res.json({ success: true, message: 'user register successfully' })

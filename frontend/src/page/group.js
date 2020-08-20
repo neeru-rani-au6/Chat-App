@@ -289,7 +289,7 @@ const Group = (props) => {
 
 
     return (
-        <div style={{ marginLeft: "100px" }} >
+        <div className="backgrnd" style={{ marginLeft: "100px" }} >
             <Header />
             {props.group.groups ?
                 <Grid container>

@@ -6,7 +6,7 @@ const Profile = (props) => {
     return props.user && (
         <div>
             <Header />
-            <main style={{ marginLeft: "100px", textAlign: "center" ,marginTop:"50px "}} >
+            <main  className="backgrnd" style={{ marginLeft: "100px", textAlign: "center" ,marginTop:"50px "}} >
                 <div style={{ marginBottom: "40px" }}>
                     {props.user && props.user.photoURL ? <img src={props.user.photoURL} style={{ borderRadius: "50%", width: "50%", height: "50%" }} alt={props.user.firstName} />
                         : <span style={{ background: "gray", borderRadius: "50%", width: "50%", height: "50%", padding: "40px", color: "#000", fontSize: "50px", textTransform: "uppercase" }}>

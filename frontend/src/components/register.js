@@ -12,6 +12,9 @@ import Container from '@material-ui/core/Container';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { registerUser } from '../redux/action/user';
+import IconButton from '@material-ui/core/IconButton';
+import PhotoCamera from '@material-ui/icons/PhotoCamera';
+import Ouricon from '../assets/images/ouricon.jpg';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -70,9 +73,9 @@ export default function Register() {
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
+      <Typography component="h1" variant="h5">
+        <img src={Ouricon} alt="user" style={{width:"100%"}}/>
+        </Typography>
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
@@ -130,6 +133,18 @@ export default function Register() {
                 value={state.password}
                 onChange={(e) => handleChange("password", e.target.value)}
               />
+            </Grid>
+            <Grid>
+            <input accept="image/*"
+             className={classes.input}
+             id="icon-button-file" 
+             type="file"
+             onChange={(e) => handleChange("photoURL", e.target.files[0])} />
+            <label htmlFor="icon-button-file">
+             <IconButton color="primary" aria-label="upload picture" component="span">
+              <PhotoCamera />
+             </IconButton>
+              </label>
             </Grid>
             {user.error &&
               <Grid item xs={12}>

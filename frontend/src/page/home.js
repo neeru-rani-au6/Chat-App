@@ -114,7 +114,7 @@ class Home extends Component {
     render() {
 
         return (
-            <div style={{ marginLeft: "100px" }}>
+            <div className="backgrnd-home" style={{ marginLeft: "100px" }}>
                 <Header />
                 {this.state.users ?
                     <div className="row">

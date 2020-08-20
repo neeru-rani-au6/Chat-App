@@ -12,6 +12,8 @@ import Container from '@material-ui/core/Container';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../redux/action/user';
+import Ouricon from '../assets/images/ouricon.jpg';
+
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -65,9 +67,9 @@ export default function SignIn() {
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
+      <Typography component="h1" variant="h5">
+        <img src={Ouricon} alt="user" style={{width:"100%"}}/>
+        </Typography>
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
