@@ -5,7 +5,7 @@ var sendMail = require('../services/email');
 const validator = require('validator');
 module.exports = {
     async userRegister(req, res) {
-        console.log(req.body)
+        //console.log(req.body)
         try {
             if (req.file && req.file.path) {
                 req.body.photoURL = req.file.path;

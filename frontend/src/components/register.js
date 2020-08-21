@@ -97,23 +97,23 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newState = { ...state };
-    if (newState.firstName.trim() === "") {
-      newState.firstNameError = "first name is required"
+    if (newState.firstName.trim() === "" || newState.firstNameError) {
+      newState.firstNameError = newState.firstNameError || "first name is required"
       setState(newState)
       return
     }
-    if (newState.lastName.trim() === "") {
-      newState.lastNameError = "last name is required"
+    if (newState.lastName.trim() === "" || newState.lastNameError) {
+      newState.lastNameError = newState.lastNameError || "last name is required"
       setState(newState);
       return
     }
-    if (newState.email.trim() === "") {
-      newState.emailError = "email is required"
+    if (newState.email.trim() === "" || newState.emailError) {
+      newState.emailError = newState.emailError || "email is required"
       setState(newState);
       return
     }
-    if (newState.password.trim() === "") {
-      newState.passwordError = "password is required"
+    if (newState.password.trim() === "" || newState.passwordError) {
+      newState.passwordError = newState.passwordError || "password is required"
       setState(newState);
       return
     }
