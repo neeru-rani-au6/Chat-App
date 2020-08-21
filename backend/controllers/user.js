@@ -5,17 +5,18 @@ var sendMail = require('../services/email');
 const validator = require('validator');
 module.exports = {
     async userRegister(req, res) {
+        console.log(req.body)
         try {
             if (req.file && req.file.path) {
-                req.body.photoURL =  req.file.path;
-              }
+                req.body.photoURL = req.file.path;
+            }
             req.body.password = await bcrypt.hash(req.body.password, 10);
             await User.create({ ...req.body });
             return res.json({ success: true, message: 'user register successfully' })
         } catch (error) {
             console.log(error)
             if (error.name === "MongoError") {
-                return res.status(400).json({ message: error.message });
+                return res.status(400).json({ error: error.message });
             }
             res.status(400).send(error);
         }

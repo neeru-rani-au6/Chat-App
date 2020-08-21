@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -46,22 +44,85 @@ export default function Register() {
   const dispatch = useDispatch();
   const [state, setState] = useState({
     firstName: "",
+    firstNameError: "",
     lastName: "",
+    lastNameError: "",
     email: "",
+    emailError: "",
     password: "",
+    passwordError: "",
     isSubmitting: false
   });
   const handleChange = (key, value) => {
-    setState({
-      ...state,
-      [key]: value
-    });
+    const newState = { ...state };
+    newState[key] = value;
+    if (key === 'firstName') {
+      newState.firstNameError = "";
+      if (!newState.firstName.match(/^[a-z ,.'-]{3,150}$/i)) {
+        newState.firstNameError = "firstName is not valid"
+      }
+      if (newState.firstName.trim() === "") {
+        newState.firstNameError = "First name is required"
+      }
+    }
+    if (key === 'lastName') {
+      newState.lastNameError = "";
+      if (!newState.lastName.match(/^[a-z ,.'-]{3,150}$/i)) {
+        newState.lastNameError = "lastName is not valid"
+      }
+      if (newState.lastName.trim() === "") {
+        newState.lastNameError = "Last name is required"
+      }
+    }
+    if (key === 'email') {
+      newState.emailError = "";
+      if (!newState.email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i)) {
+        newState.emailError = "invalid email "
+      }
+      if (newState.email.trim() === "") {
+        newState.emailError = "email is required"
+      }
+    }
+    if (key === "password") {
+      newState.passwordError = "";
+      if (newState.password.length < 5) {
+        newState.passwordError = "Can not be less than 5"
+      }
+      if (newState.password.trim() === "") {
+        newState.passwordError = "password is required"
+      }
+    }
+    setState(newState);
   }
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setState({ ...state, isSubmitting: true });
+    const newState = { ...state };
+    if (newState.firstName.trim() === "") {
+      newState.firstNameError = "first name is required"
+      setState(newState)
+      return
+    }
+    if (newState.lastName.trim() === "") {
+      newState.lastNameError = "last name is required"
+      setState(newState);
+      return
+    }
+    if (newState.email.trim() === "") {
+      newState.emailError = "email is required"
+      setState(newState);
+      return
+    }
+    if (newState.password.trim() === "") {
+      newState.passwordError = "password is required"
+      setState(newState);
+      return
+    }
+
+    newState.isSubmitting = true;
+    setState(newState);
     await dispatch(registerUser(state));
-    setState({ ...state, isSubmitting: false });
+    newState.isSubmitting = true;
+    setState(newState);
     if (!user.error) {
       history.push('/');
     }
@@ -73,8 +134,8 @@ export default function Register() {
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
-      <Typography component="h1" variant="h5">
-        <img src={Ouricon} alt="user" style={{width:"100%"}}/>
+        <Typography component="h1" variant="h5">
+          <img src={Ouricon} alt="user" style={{ width: "100%" }} />
         </Typography>
         <Typography component="h1" variant="h5">
           Sign up
@@ -92,8 +153,8 @@ export default function Register() {
                 label="First Name"
                 value={state.firstName}
                 onChange={(e) => handleChange("firstName", e.target.value)}
-                error={state.firstName === "",state.firstName.length<=3}
-                helperText={state.firstName === "" ? 'Empty!' : ' ',state.firstName.length<=3 ? 'atleast  4 char !' : ' '}
+                error={!!state.firstNameError}
+                helperText={state.firstNameError}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -107,8 +168,8 @@ export default function Register() {
                 autoComplete="lname"
                 value={state.lastName}
                 onChange={(e) => handleChange("lastName", e.target.value)}
-                error={state.lastName === "",state.lastName.length<=3 }
-                helperText={state.lastName === "" ? 'Empty!' : ' ', state.lastName.length<=3 ? 'atleast  4 char !' : ' '}
+                error={!!state.lastNameError}
+                helperText={state.lastNameError}
               />
             </Grid>
             <Grid item xs={12}>
@@ -122,8 +183,8 @@ export default function Register() {
                 autoComplete="email"
                 value={state.email}
                 onChange={(e) => handleChange("email", e.target.value)}
-                error={!state.email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i)}
-                helperText={!state.email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i)?"Enter a valid email!":''}
+                error={!!state.emailError}
+                helperText={state.emailError}
 
               />
             </Grid>
@@ -139,20 +200,20 @@ export default function Register() {
                 autoComplete="current-password"
                 value={state.password}
                 onChange={(e) => handleChange("password", e.target.value)}
-                error={state.password === "" && state.password.length<=5}
-                helperText={state.password === "" && state.password.length<=5 ? 'must not be empty and atleast  6 char !' : ' '}
+                error={!!state.passwordError}
+                helperText={state.passwordError}
               />
             </Grid>
             <Grid>
-            <input accept="image/*"
-             className={classes.input}
-             id="icon-button-file" 
-             type="file"
-             onChange={(e) => handleChange("photoURL", e.target.files[0])} />
-            <label htmlFor="icon-button-file">
-             <IconButton color="primary" aria-label="upload picture" component="span">
-              <PhotoCamera />
-             </IconButton>
+              <input accept="image/*"
+                className={classes.input}
+                id="icon-button-file"
+                type="file"
+                onChange={(e) => handleChange("photoURL", e.target.files[0])} />
+              <label htmlFor="icon-button-file">
+                <IconButton color="primary" aria-label="upload picture" component="span">
+                  <PhotoCamera />
+                </IconButton>
               </label>
             </Grid>
             {user.error &&

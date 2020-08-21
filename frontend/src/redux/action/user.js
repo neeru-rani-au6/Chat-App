@@ -2,15 +2,17 @@ import { LOGIN, LOGOUT, REGISTER, ALLUSER, FORGOTPASSWORD, CHANGEPASSWORD } from
 import axios from 'axios';
 
 export const registerUser = (user) => async dispatch => {
-     console.log(user)
+    console.log(user)
     try {
         const formData = new FormData();
         formData.append("firstName", user.firstName);
-        formData.append("lastName",  user.lastName);
-        formData.append("email",  user.email);
-        formData.append("password",  user.password);
-        formData.append("photoURL", user.photoURL,user.photoURL.name);
-        
+        formData.append("lastName", user.lastName);
+        formData.append("email", user.email);
+        formData.append("password", user.password);
+        if (user.photoURL) {
+            formData.append("photoURL", user.photoURL, user.photoURL.name);
+        }
+
         const { data } = await axios({
             method: "post",
             url: '/users/register',
@@ -18,11 +20,11 @@ export const registerUser = (user) => async dispatch => {
             headers: {
                 'content-type': 'multipart/form-data',
                 "Accept": "application/json",
-                 "type": "formData"
-             }
+                "type": "formData"
             }
+        }
         );
-        console.log(data,"1234")
+        console.log(data, "1234")
         dispatch({
             type: REGISTER,
             payload: {
@@ -32,7 +34,7 @@ export const registerUser = (user) => async dispatch => {
         })
 
     } catch (error) {
-        console.log(error)
+        console.log('adsfasdf', error.response)
         dispatch({
             type: REGISTER,
             payload: {
