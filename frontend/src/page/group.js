@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -107,7 +107,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Group = (props) => {
-
+    const messageRef = useRef();
     const classes = useStyles();
     const [openemoji, setOpenEmoji] = React.useState(false);
 
@@ -224,7 +224,9 @@ const Group = (props) => {
     }, [dispatch]);
 
     socket.on('message', (data) => {
-        setMessages(messages => messages.concat(data))
+        setMessages(messages => messages.concat(data));
+        scrollToBottom();
+
     })
 
     const openChatting = async (item) => {
@@ -237,6 +239,7 @@ const Group = (props) => {
         setMessages(props.chat.messages)
         setLoading(false);
         socket.emit('join', item._id);
+        scrollToBottom();
     }
 
 
@@ -287,7 +290,11 @@ const Group = (props) => {
         </Snackbar>
     }
 
-
+    const scrollToBottom = () => {
+        if (messageRef.current) {
+            messageRef.current.scrollIntoView();
+        }
+    }
     return (
         <div className="backgrnd" style={{ marginLeft: "100px" }} >
             <Header />
@@ -370,11 +377,15 @@ const Group = (props) => {
                                                 }
                                                 title={state.selectedGroup.groupName}
                                             />
+
                                         </Typography>
+                                        <div style={{ marginRight: "10px", color: "lightblue" }}>
+                                            {state.selectedGroup.member.length} Participants
+                                        </div>
                                         <div >
                                             <Tooltip title="Share documents" aria-label="add">
                                                 <Fab size="small" style={{ marginRight: "8px" }}>
-                                                    <input accept="image/*,video/*" className={classes.input} id="icon-button-file" type="file" onChange={onChangeHandler} />
+                                                    <input accept="image/*,video/*,application/pdf" className={classes.input} id="icon-button-file" type="file" onChange={onChangeHandler} />
                                                     <label htmlFor="icon-button-file" >
                                                         <IconButton type="file" aria-label="upload picture" component="span">
                                                             <AttachmentIcon />
@@ -437,19 +448,24 @@ const Group = (props) => {
                                     <Grid className="messages">
                                         {loading && <div className={classes.root1}><CircularProgress /></div>}
                                         {messages && messages.map(item => (
-                                            <Grid item xs={12} key={item._id} style={{ padding: '8px' }}>
+                                            <Grid item xs={12} key={item._id} style={{ padding: '8px' }} ref={messageRef}>
                                                 <div className="message">
                                                     <Avatar className="message-photo" src={item.phtoURL || userimage} alt="message" />
                                                     <div className="message-name">{item.name}</div>
                                                 </div>
                                                 {item.file ?
                                                     <>
-                                                        {item.type && item.type.indexOf('video') !== -1 ?
+                                                        {item?.type.indexOf('video') !== -1 ?
                                                             <video width="320" height="240" controls autoPlay>
                                                                 <source src={`/uploads/${item.file}`} type={item.typetype} />
                                                             </video>
                                                             :
-                                                            <img className="message-file" src={`/uploads/${item.file}`} alt={item.file} />
+                                                            item?.type.indexOf('pdf') !== -1 || item?.type.indexOf('text') !== -1 ?
+                                                                <div className="message-content">
+                                                                    <a className="send-link" target="_blank" rel="noopener noreferrer" href={"/uploads/" + item.file}>{item.fileName || 'open pdf'}</a>
+                                                                </div>
+                                                                :
+                                                                <img className="message-file" src={`/uploads/${item.file}`} alt={item.file} />
                                                         }
                                                     </>
                                                     :

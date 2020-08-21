@@ -96,6 +96,7 @@ module.exports = {
             return res.status(404).json(error)
        }
     },
+    
     async forgotPassword(req, res) {
         try {
             var email = req.body.email;
