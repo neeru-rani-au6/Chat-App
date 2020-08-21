@@ -35,6 +35,9 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  input: {
+    display: 'none',
+  },
 }));
 
 export default function Register() {
@@ -141,6 +144,19 @@ export default function Register() {
           Sign up
         </Typography>
         <form onSubmit={handleSubmit} className={classes.form} noValidate>
+          <Grid>
+            <input accept="image/*"
+              className={classes.input}
+              id="icon-button-file"
+              type="file"
+              onChange={(e) => handleChange("photoURL", e.target.files[0])} />
+            <label htmlFor="icon-button-file">
+              <IconButton color="primary" aria-label="upload picture" component="span">
+                <PhotoCamera />
+              </IconButton>
+                Choose photo
+            </label>
+          </Grid>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -203,18 +219,6 @@ export default function Register() {
                 error={!!state.passwordError}
                 helperText={state.passwordError}
               />
-            </Grid>
-            <Grid>
-              <input accept="image/*"
-                className={classes.input}
-                id="icon-button-file"
-                type="file"
-                onChange={(e) => handleChange("photoURL", e.target.files[0])} />
-              <label htmlFor="icon-button-file">
-                <IconButton color="primary" aria-label="upload picture" component="span">
-                  <PhotoCamera />
-                </IconButton>
-              </label>
             </Grid>
             {user.error &&
               <Grid item xs={12}>

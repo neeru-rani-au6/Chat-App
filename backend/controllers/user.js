@@ -91,6 +91,7 @@ module.exports = {
             res.status(400).send(error)
         }
     },
+    
     async forgotPassword(req, res) {
         try {
             var email = req.body.email;

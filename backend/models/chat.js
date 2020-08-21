@@ -21,6 +21,7 @@ var chat = new Schema(
             trim: true
         },
         file: String,
+        fileName:String,
         name: String,
         type: String,
         photoURL: String

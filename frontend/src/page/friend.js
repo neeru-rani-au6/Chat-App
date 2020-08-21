@@ -33,13 +33,14 @@ class Friends extends Component {
         openemoji: false,
         chosenEmoji: null
     }
+    messageRef = React.createRef();
     socket = null;
     async componentDidMount() {
         await this.props.allFriends();
         // console.log(this.props)
         await this.setState({ friends: this.props.friend.friends.friends });
         //  console.log(this.state.friends);
-        this.socket = io("http://localhost:3000");
+        this.socket = io("/");
         this.socket.emit('user-join', this.props.user.user.id);
         this.socket.on('user-join', async (data) => {
             const friends = [...this.state.friends];
@@ -64,7 +65,9 @@ class Friends extends Component {
                     }
                 }
                 this.setState({ friends });
+
             }
+            this.scrollToBottom();
         });
     }
 
@@ -136,13 +139,13 @@ class Friends extends Component {
         });
         await this.props.singleChat(item._id);
         //console.log(this.props.chats.singleMessages)
-        this.setState({
+        await this.setState({
             messages: this.props.chats.singleMessages
         })
-        this.setState({
+        await this.setState({
             loading: false
         });
-
+        this.scrollToBottom();
     }
 
     onChangeHandler = (event) => {
@@ -173,16 +176,20 @@ class Friends extends Component {
         // setOpenEmoji(false);
     };
 
-    onEmojiClick = async(event, emojiObject) => {
-       // this.setState(emojiObject);
+    onEmojiClick = async (event, emojiObject) => {
+        // this.setState(emojiObject);
         //console.log(emojiObject.emoji)
-       await  this.setState({
-            ...this.state, message: this.state.message+emojiObject.emoji
+        await this.setState({
+            ...this.state, message: this.state.message + emojiObject.emoji
         })
         this.setState({
             chosenEmoji: false
         })
     };
+
+    scrollToBottom = () => {
+        this.messageRef.current && this.messageRef.current.scrollIntoView();
+    }
     render() {
         return (
             <div className="backgrnd" style={{ marginLeft: "100px" }}>
@@ -194,7 +201,7 @@ class Friends extends Component {
                                 <Grid container direction="column" alignItems="flex-start">
                                     {this.state.friends && this.state.friends.map((item) => (
                                         <Grid item key={item._id} style={{ margin: '10px 0' }}>
-                                            <Card  className="backgrnd" onClick={() => this.handleFrndChat(item)} style={this.state.selectFriend && this.state.selectFriend._id === item._id ? { backgroundColor: '#bbb' } : { cursor: 'pointer' }}>
+                                            <Card className="backgrnd" onClick={() => this.handleFrndChat(item)} style={this.state.selectFriend && this.state.selectFriend._id === item._id ? { backgroundColor: '#bbb' } : { cursor: 'pointer' }}>
                                                 <CardHeader
                                                     avatar={
                                                         <Avatar alt="user" src={item.photoURL || userimage} />
@@ -232,7 +239,7 @@ class Friends extends Component {
                                             </Typography>
                                             <Tooltip title="Share documents" aria-label="add">
                                                 <Fab size="small" style={{ marginRight: "8px" }}>
-                                                    <input accept="image/*,video/*" className='input' id="icon-button-file" type="file" onChange={this.onChangeHandler} />
+                                                    <input accept="image/*,video/*,application/pdf" className='input' id="icon-button-file" type="file" onChange={this.onChangeHandler} />
                                                     <label htmlFor="icon-button-file" >
                                                         <IconButton type="file" aria-label="upload picture" component="span">
                                                             <AttachmentIcon />
@@ -246,19 +253,24 @@ class Friends extends Component {
                                         <Grid className="messages">
                                             {this.state.loading && <div className="loader"><CircularProgress /></div>}
                                             {this.state.messages.map(item => (
-                                                <Grid item xs={12} key={item._id} style={{ padding: '8px' }}>
+                                                <Grid item xs={12} key={item._id} style={{ padding: '8px' }} ref={this.messageRef}>
                                                     <div className="message">
                                                         <Avatar className="message-photo" src={item.photoURL || userimage} alt="message" />
                                                         <div className="message-name">{item.name}</div>
                                                     </div>
                                                     {item.file ?
                                                         <>
-                                                            {item.type && item.type.indexOf('video') !== -1 ?
+                                                            {item?.type.indexOf('video') !== -1 ?
                                                                 <video width="320" height="240" controls autoPlay>
-                                                                    <source src={`/uploads/${item.file}`} type={item.typetype} />
+                                                                    <source src={`/uploads/${item.file}`} type={item.type} />
                                                                 </video>
                                                                 :
-                                                                <img className="message-file" src={`/uploads/${item.file}`} alt={item.file} />
+                                                                item?.type.indexOf('pdf') !== -1 || item?.type.indexOf('text') !== -1 ?
+                                                                    <div className="message-content">
+                                                                        <a className="send-link" target="_blank" rel="noopener noreferrer" href={"/uploads/" + item.file}>{item.fileName || 'open pdf'}</a>
+                                                                    </div>
+                                                                    :
+                                                                    <img className="message-file" src={`/uploads/${item.file}`} alt={item.file} />
                                                             }
                                                         </>
                                                         :
@@ -273,7 +285,7 @@ class Friends extends Component {
                                                     <div>
                                                         <ClickAwayListener onClickAway={this.handleClickAwayEmoji}>
                                                             <div>
-                                                                <InsertEmoticonIcon onClick={this.handleClickEmoji} style={{ cursor: "pointer" }}/>
+                                                                <InsertEmoticonIcon onClick={this.handleClickEmoji} style={{ cursor: "pointer" }} />
                                                                 {this.state.openemoji ? (
                                                                     <Portal>
                                                                         <div className="emoji-class">
