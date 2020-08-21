@@ -84,12 +84,17 @@ module.exports = {
     },
     async updateUser(req, res) {
         try {
-            var result = await User.updateOne({ _id: req.params.id }, { ...req.body })
-            res.json(result)
+            
+            if (req.file.path){
+             await User.updateOne(
+                    {_id: req.params.id },
+                    {$set:{photoURL: req.file.path}});
+             }  
+          return res.json({photoURL:req.file.path})
         } catch (error) {
             console.log(error)
-            res.status(400).send(error)
-        }
+            return res.status(404).json(error)
+       }
     },
     async forgotPassword(req, res) {
         try {

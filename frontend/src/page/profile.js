@@ -1,8 +1,45 @@
-import React from 'react';
+import React ,{useState} from 'react';
 import Header from '../components/header';
+import IconButton from '@material-ui/core/IconButton';
+import PhotoCamera from '@material-ui/icons/PhotoCamera';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Container from '@material-ui/core/Container';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateUser } from '../redux/action/user';
 import { connect } from 'react-redux';
 const Profile = (props) => {
-
+    const user = useSelector(state => state.userState);
+    const history = useHistory();
+    const dispatch = useDispatch();
+    const [state, setState] = useState({
+        userId:props.user.id,
+        token:props.user.token,
+        firstName:props.user.firstName,
+        lastName:props.user.lastName,
+        email:props.user.email,
+        isSubmitting: false,
+        
+      });
+      const handleChange = (key, value) => {
+        const newState = { ...state };
+        newState[key] = value;
+        setState(newState);
+      }
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const newState = { ...state };
+        newState.isSubmitting = true;
+        setState(newState);
+        await dispatch(updateUser(state));
+        newState.isSubmitting =false;
+        setState(newState);
+        if (!user.error) {
+          history.push('/profile');
+        }
+      }
     return props.user && (
         <div>
             <Header />
@@ -14,6 +51,31 @@ const Profile = (props) => {
                         </span>
                     }
                 </div>
+                <Container component="main" maxWidth="xs">
+                <CssBaseline />
+                <form onSubmit={handleSubmit} noValidate>
+                <Grid>
+              <input accept="image/*"
+                id="icon-button-file"
+                type="file"
+                onChange={(e) => handleChange("photoURL", e.target.files[0])} />
+               <label htmlFor="icon-button-file">
+                <IconButton color="primary" aria-label="upload picture" component="span">
+                  <PhotoCamera />
+                </IconButton>
+              </label>
+            </Grid>
+            <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            disabled={state.isSubmitting}
+          >
+            Update Photo
+          </Button>
+          </form>
+          </Container>
                 <h3>
                     Name: {props.user.firstName + " " + props.user.lastName}
                 </h3>

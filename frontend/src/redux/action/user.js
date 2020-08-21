@@ -1,8 +1,8 @@
-import { LOGIN, LOGOUT, REGISTER, ALLUSER, FORGOTPASSWORD, CHANGEPASSWORD } from '../type';
+import { LOGIN, LOGOUT, REGISTER,UPDATEUSER, ALLUSER, FORGOTPASSWORD, CHANGEPASSWORD } from '../type';
 import axios from 'axios';
 
 export const registerUser = (user) => async dispatch => {
-    console.log(user)
+    //console.log(user)
     try {
         const formData = new FormData();
         formData.append("firstName", user.firstName);
@@ -24,7 +24,7 @@ export const registerUser = (user) => async dispatch => {
             }
         }
         );
-        console.log(data, "1234")
+        //console.log(data, "1234")
         dispatch({
             type: REGISTER,
             payload: {
@@ -34,9 +34,56 @@ export const registerUser = (user) => async dispatch => {
         })
 
     } catch (error) {
-        console.log('adsfasdf', error.response)
+        //console.log('adsfasdf', error.response)
         dispatch({
             type: REGISTER,
+            payload: {
+                error: error.response.data.message,
+                info: null
+            }
+        })
+
+
+    }
+}
+
+export const updateUser = (user) => async dispatch => {
+    console.log(user)
+    try {
+        const formData = new FormData();
+        formData.append("firstName", user.firstName);
+        formData.append("lastName", user.lastName);
+        formData.append("email", user.email);
+        formData.append("password", user.password);
+        formData.append("token",user.token)
+        if (user.photoURL) {
+            formData.append("photoURL", user.photoURL, user.photoURL.name);
+        }
+        
+        const { data } = await axios({
+            method: 'Put',
+            url: `/users/${user.userId}`,
+            data: formData,
+            headers: {
+                'content-type': 'multipart/form-data'
+               
+            }
+        }
+        );
+        console.log(data, "1234")
+        dispatch({
+            type: UPDATEUSER,
+            payload: {
+                error: null,
+                info: data,
+               photoURL:data.photoURL
+            }
+        })
+
+    } catch (error) {
+        //console.log('adsfasdf', error.response)
+        dispatch({
+            type: UPDATEUSER,
             payload: {
                 error: error.response.data.message,
                 info: null

@@ -11,6 +11,7 @@ async function createToken(user) {
 }
 async function validateToken(req, res, next) {
     try {
+       
         var token = req.cookies.token || req.headers['authorization'] || req.body['authorization'];
         const payload = await jwt.verify(token, key);
         req.user = {

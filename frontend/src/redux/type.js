@@ -13,3 +13,4 @@ export const FINDGROUP = "FINDGROUP";
 export const SEARCHUSER = "SEARCHUSER";
 export const ALLMESSAGE = "ALLMESSAGE";
 export const SINGLECHAT= 'SINGLECHAT';
+export const UPDATEUSER='UPDATEUSER';

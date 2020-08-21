@@ -15,5 +15,5 @@ router.post("/forgotpassword", forgotPassword);
 router.post('/Changepassword', Changepassword);
 router.post("/search",searchUser)
 router.get('/:id', validateToken, getoneUser);
-router.put('/:id', validateToken, updateUser)
+router.put('/:id', validateToken,upload.single("photoURL"), updateUser);
 module.exports = router;
