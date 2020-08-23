@@ -10,8 +10,8 @@ import Container from '@material-ui/core/Container';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { registerUser } from '../redux/action/user';
-import IconButton from '@material-ui/core/IconButton';
-import PhotoCamera from '@material-ui/icons/PhotoCamera';
+// import IconButton from '@material-ui/core/IconButton';
+// import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import Ouricon from '../assets/images/ouricon.jpg';
 
 const useStyles = makeStyles((theme) => ({
@@ -34,9 +34,6 @@ const useStyles = makeStyles((theme) => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
-  },
-  input: {
-    display: 'none',
   },
 }));
 
@@ -151,10 +148,9 @@ export default function Register() {
               type="file"
               onChange={(e) => handleChange("photoURL", e.target.files[0])} />
             <label htmlFor="icon-button-file">
-              <IconButton color="primary" aria-label="upload picture" component="span">
+              {/* <IconButton color="primary" aria-label="upload picture" component="span">
                 <PhotoCamera />
-              </IconButton>
-                Choose photo
+              </IconButton> */}
             </label>
           </Grid>
           <Grid container spacing={2}>
@@ -239,7 +235,7 @@ export default function Register() {
           <Grid container justify="center" className="mt-2">
             <Grid item>
               Already have an account?
-              <Link href="/" variant="body2">
+              <Link href="/login" variant="body2">
                 Sign in
               </Link>
             </Grid>

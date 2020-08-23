@@ -349,7 +349,11 @@ const Group = (props) => {
                                                     <Avatar alt="user" src={item.photoURL || userimage} />
                                                 }
                                                 title={item.groupName}
-                                                subheader={new Date(item.createdAt).toLocaleDateString() + ' ' + new Date(item.createdAt).toLocaleTimeString()}
+                                                subheader={
+                                                    <div>
+                                                        Created Date:{new Date(item.createdAt).toLocaleDateString()}
+                                                    </div>
+                                                }
                                             />
                                         </Card>
 

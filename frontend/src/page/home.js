@@ -26,16 +26,18 @@ class Home extends Component {
         snackbarSeverity: "success"
     }
     async componentDidMount() {
-        if (!this.props.userState.users) {
-            await this.props.allUser();
+        if(this.props.userState.user){
+            if (!this.props.userState.users) {
+                await this.props.allUser();
+            }
+            await this.props.allRequest();
+            this.setState({
+                users: this.props.userState.users,
+            })
+            //console.log(this.props.request.requests)
+            await this.props.updatetRequest();
+            console.log(this.props, "user")
         }
-        await this.props.allRequest();
-        this.setState({
-            users: this.props.userState.users,
-        })
-        //console.log(this.props.request.requests)
-        await this.props.updatetRequest();
-        //console.log(this.props.userState.user.id, "user")
     }
 
     connect = async (receiver) => {
@@ -127,7 +129,7 @@ class Home extends Component {
                                                 className="user-image"
                                                 component="img"
                                                 image={item.photoURL || userimage}
-                                                title="user iamge"
+                                                title="user image"
                                             />
                                             <CardActions style={{ justifyContent: 'center', flexDirection: 'column' }}>
                                                 <Typography style={{ fontWeight: "bold" }}>
@@ -193,7 +195,7 @@ class Home extends Component {
                                     </div>
 
                                 </Paper>
-                            </Grid>
+                            </Grid> 
                         </Grid>
                     </div>
                     : <div className="loader">
@@ -206,7 +208,6 @@ class Home extends Component {
     }
 }
 const mapStateToProps = (state) => {
-    //console.log(state)
     return {
         userState: state.userState,
         request: state.requestReducer

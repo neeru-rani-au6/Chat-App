@@ -58,7 +58,7 @@ export default function SignIn() {
     setState({ ...state, isSubmitting: false });
     //console.log(user.error);
     if (!user.error) {
-      history.push('/home');
+      history.push('/');
     }
   }
   return (

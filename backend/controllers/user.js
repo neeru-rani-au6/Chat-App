@@ -64,8 +64,14 @@ module.exports = {
     },
     async getallUser(req, res) {
         try {
-            var result = await User.find({ _id: { $ne: req.user.id } });
-            res.json(result)
+            var result = await User.find();
+            const user = result.find(u=>u._id == req.user.id);
+             let filteredUser = result;
+            if(user.friends && user.friends.length > 0){
+                user.friends.push(user._id);
+                filteredUser = result.filter((r)=>!user.friends.includes(r._id))
+            }
+             res.json(filteredUser)
         } catch (error) {
             console.log(error)
             res.status(400).send(error)
@@ -74,7 +80,7 @@ module.exports = {
     },
     async getoneUser(req, res) {
         try {
-            var result = await User.find({ _id: req.params.id })
+            var result = await User.findOne({ _id: req.params.id }).populate('friends').populate('group').exec()
             res.json(result);
         } catch (error) {
             console.log(error)

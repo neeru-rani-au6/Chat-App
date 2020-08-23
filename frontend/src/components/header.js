@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import { makeStyles, useTheme, fade } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -30,6 +30,8 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grid from '@material-ui/core/Grid';
 import userimage from '../assets/images/user.jpg';
 import { Card, Avatar, CardHeader } from '@material-ui/core';
+import Tooltip from '@material-ui/core/Tooltip';
+
 
 const drawerWidth = 240;
 
@@ -169,12 +171,13 @@ function MiniDrawer(props) {
     };
 
     const [openClick, setopenClick] = React.useState(false);
-
+    // const [searchResults, setSearchResults] = React.useState([]);
 
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [state, setState] = useState({
         searchQuery: '',
-        searchQueryResult: null
+        searchQueryResult: null,
+        users: null
     })
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -192,7 +195,7 @@ function MiniDrawer(props) {
     };
     const logoutUser = async () => {
         await props.logout();
-        history.push("/");
+        history.push("/login");
     }
     const handleChangeSearch = (key, value) => {
         setState({
@@ -200,6 +203,27 @@ function MiniDrawer(props) {
             [key]: value
         });
     }
+    // const handleSearchChange = event => {
+    //     setSearchTerm(event.target.value);
+    //     const results = props.userState.users.filter(person =>
+    //         person.firstName.toLowerCase().indexOf(searchTerm) !== -1
+    //     );
+    //     setSearchResults(results);
+    // };
+
+    useEffect(() => {
+        if (!props.userState.isAuthenticated) {
+            history.push('/login');
+        }
+    }, [props, history]);
+
+    // React.useEffect(() => {
+    //     const results = props.userState.users.filter(person =>
+    //         person.toLowerCase().includes(searchTerm)
+    //     );
+    //     setSearchResults(results);
+    // }, [searchTerm]);
+
 
     const handleSubmitSearch = async (e) => {
         e.preventDefault();
@@ -211,6 +235,11 @@ function MiniDrawer(props) {
         setState({ ...state, searchQueryResult: props.group.searchQuery });
 
     };
+
+    const userDetailPage = async (id) => {
+        //console.log(id)
+        history.push(`/user/${id}`)
+    }
 
     return (
         <div className={classes.root}>
@@ -224,7 +253,9 @@ function MiniDrawer(props) {
                 <Toolbar style={{ justifyContent: 'space-between' }}>
                     <div className={classes.menuLogo}>
                         <Typography variant="h6" noWrap style={{ width: "50px", height: "50px", borderRadius: "50%" }}>
-                            <img src={Ouricon} alt="user" style={{ width: "100%" }} />
+                            <Link to="/" style={{ textDecoration: "none" }}>
+                                <img src={Ouricon} alt="user" style={{ width: "100%", cursor: "pointer" }} />
+                            </Link>
                         </Typography>
                         <form className={classes.search} style={{ marginLeft: "100px" }} onSubmit={handleSubmitSearch}>
                             <div className={classes.searchIcon} >
@@ -237,9 +268,16 @@ function MiniDrawer(props) {
                                     input: classes.inputInput,
                                 }}
                                 value={state.searchQuery}
+                                // value={searchTerm}
+                                // onChange={handleSearchChange}
                                 inputProps={{ 'aria-label': 'search' }}
                                 onChange={(e) => handleChangeSearch("searchQuery", e.target.value)}
                             />
+                            {/* <ul>
+                                {searchResults.map(item => (
+                                    <li key={item._id}>{item.firstName}</li>
+                                ))}
+                            </ul> */}
                             <ClickAwayListener onClickAway={handleClickAway}>
                                 <div className={classes.rootclick}>
                                     <div>
@@ -248,18 +286,20 @@ function MiniDrawer(props) {
                                                 <div className={classes.dropdown} >
                                                     <Grid style={{ margin: '10px 0' }} container direction="column" >
                                                         {state.searchQueryResult && state.searchQueryResult.map((item) => (
-                                                            <Grid item key={item._id} >
-                                                                <div style={{ color: "white" }}>
+                                                            <Grid item key={item._id} onClick={() => userDetailPage(item._id)}>
+                                                                {/* <div style={{ color: "white" }}>
                                                                     We have this user.
-                                                                </div>
-                                                                <Card>
-                                                                    <CardHeader
-                                                                        avatar={
-                                                                            <Avatar alt="user" src={item.photoURL || userimage} />
-                                                                        }
-                                                                        title={item.firstName + " " + item.lastName}
-                                                                    />
-                                                                </Card>
+                                                                </div> */}
+                                                                <Tooltip title="click for seen user Details" aria-label="add">
+                                                                    <Card style={{ cursor: "pointer" }}>
+                                                                        <CardHeader
+                                                                            avatar={
+                                                                                <Avatar alt="user" src={item.photoURL || userimage} />
+                                                                            }
+                                                                            title={item.firstName + " " + item.lastName}
+                                                                        />
+                                                                    </Card>
+                                                                </Tooltip>
                                                             </Grid>
                                                         ))}
                                                     </Grid>
@@ -327,23 +367,26 @@ function MiniDrawer(props) {
                 <Divider />
                 <List>
                     <ListItem button>
-                        <Link to="/home" style={{ textDecoration: "none" }}>
-                            <ListItemIcon>
+                        <Link to="/" style={{ textDecoration: "none" }}>
+                            <ListItemIcon style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: '30px' }}>
                                 <HomeIcon />
+                                <Typography variant="body2">Home</Typography>
                             </ListItemIcon>
                         </Link>
                     </ListItem>
                     <ListItem button>
                         <Link to="/friend" style={{ textDecoration: "none" }}>
-                            <ListItemIcon>
+                            <ListItemIcon style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: '30px' }}>
                                 <PersonIcon />
+                                <Typography variant="body2">Friend</Typography>
                             </ListItemIcon>
                         </Link>
                     </ListItem>
                     <ListItem button>
                         <Link to="/group" style={{ textDecoration: "none" }}>
-                            <ListItemIcon>
+                            <ListItemIcon style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: '30px' }}>
                                 <PeopleAltIcon />
+                                <Typography variant="body2">Group</Typography>
                             </ListItemIcon>
                         </Link>
                     </ListItem>
@@ -358,10 +401,12 @@ function MiniDrawer(props) {
 }
 
 const mapStateToProps = (state) => {
+    //console.log(state.userState)
     return {
         user: state.userState.user,
         isAuth: state.isAuthenticated,
-        group: state.groupReducer
+        group: state.groupReducer,
+        userState: state.userState,
     }
 }
 export default connect(mapStateToProps, { logout, searchUser })(MiniDrawer);

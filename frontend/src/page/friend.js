@@ -212,7 +212,11 @@ class Friends extends Component {
                                                             {item.unread > 0 && item.unread}
                                                         </span>
                                                     }
-                                                    subheader={new Date(item.createdAt).toLocaleDateString() + ' ' + new Date(item.createdAt).toLocaleTimeString()}
+                                                    subheader={
+                                                        <div>
+                                                           Last seen:{new Date(item.updatedAt).toLocaleTimeString() }
+                                                        </div>
+                                                    }
                                                 />
                                             </Card>
                                         </Grid>
@@ -235,6 +239,10 @@ class Friends extends Component {
                                                         <Avatar alt="user" src={this.state.selectFriend.photoURL || userimage} />
                                                     }
                                                     title={this.state.selectFriend.firstName + ' ' + this.state.selectFriend.lastName}
+                                                    subheader={
+                                                        <div className="time">Last seen:{new Date(this.state.selectFriend.updatedAt).toLocaleTimeString() + ' ' + new Date(this.state.selectFriend.updatedAt).toLocaleDateString()}
+                                                        </div>
+                                                    }
                                                 />
                                             </Typography>
                                             <Tooltip title="Share documents" aria-label="add">

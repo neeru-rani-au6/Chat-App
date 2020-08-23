@@ -108,5 +108,13 @@
 .send-link {
     color: darkblue;
     font-size: medium;
-    
+}
+
+.friend {
+    max-width: 250px;
+    margin: 15px;
+}
+
+.time {
+    color: white;
 }

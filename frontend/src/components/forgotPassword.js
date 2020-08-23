@@ -110,7 +110,7 @@ const SignIn = (props) => {
                         </Grid>
                         <Grid item >
                             Back to
-              <Link href="/" variant="body2" className="mt-2">
+              <Link href="/login" variant="body2" className="mt-2">
                                 {" Sign in"}
                             </Link>
                         </Grid>

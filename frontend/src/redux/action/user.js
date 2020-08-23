@@ -1,4 +1,4 @@
-import { LOGIN, LOGOUT, REGISTER,UPDATEUSER, ALLUSER, FORGOTPASSWORD, CHANGEPASSWORD } from '../type';
+import { LOGIN, LOGOUT, REGISTER, UPDATEUSER, ALLUSER, FORGOTPASSWORD, CHANGEPASSWORD, SINGLEUSER } from '../type';
 import axios from 'axios';
 
 export const registerUser = (user) => async dispatch => {
@@ -55,18 +55,18 @@ export const updateUser = (user) => async dispatch => {
         formData.append("lastName", user.lastName);
         formData.append("email", user.email);
         formData.append("password", user.password);
-        formData.append("token",user.token)
+        formData.append("token", user.token)
         if (user.photoURL) {
             formData.append("photoURL", user.photoURL, user.photoURL.name);
         }
-        
+
         const { data } = await axios({
             method: 'Put',
             url: `/users/${user.userId}`,
             data: formData,
             headers: {
                 'content-type': 'multipart/form-data'
-               
+
             }
         }
         );
@@ -76,7 +76,7 @@ export const updateUser = (user) => async dispatch => {
             payload: {
                 error: null,
                 info: data,
-               photoURL:data.photoURL
+                photoURL: data.photoURL
             }
         })
 
@@ -209,6 +209,21 @@ export const changePassword = (user) => async dispatch => {
                 info: null
             }
         })
+
+    }
+}
+
+export const singleUser = (id) => async dispatch => {
+    try {
+        axios.defaults.withCredentials = true;
+        const { data } = await axios(`/users/${id}`)
+        dispatch({
+            type: SINGLEUSER,
+            payload: { oneuser: data }
+        });
+        //console.log(data);
+    } catch (error) {
+        console.log(error)
 
     }
 }

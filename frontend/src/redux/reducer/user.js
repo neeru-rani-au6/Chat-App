@@ -1,4 +1,4 @@
-import { REGISTER, LOGOUT, LOGIN, UPDATEUSER,ALLUSER, FORGOTPASSWORD, CHANGEPASSWORD } from '../type';
+import { REGISTER, LOGOUT, LOGIN, UPDATEUSER, ALLUSER, FORGOTPASSWORD, CHANGEPASSWORD, SINGLEUSER } from '../type';
 
 const initalstate = {
     user: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null,
@@ -6,12 +6,14 @@ const initalstate = {
     info: null,
     error: null,
     users: null,
-    useremail: null
+    useremail: null,
+    oneuser: null,
+    search: null
 }
 
 const userReducer = (state = initalstate, action) => {
     const { type, payload } = action;
-    console.log(type,payload)
+    //console.log(type,payload)
     switch (type) {
         case REGISTER:
             const newState = Object.assign(state, payload);
@@ -36,13 +38,15 @@ const userReducer = (state = initalstate, action) => {
             // console.log(newState1)
             return newState1
         case UPDATEUSER:
-               const user={...state.user,photoURL:payload.photoURL}
-               localStorage.setItem('user', JSON.stringify(user));
-              return {...state,user};  
+            const user = { ...state.user, photoURL: payload.photoURL }
+            localStorage.setItem('user', JSON.stringify(user));
+            return { ...state, user };
         case CHANGEPASSWORD:
             if (payload.user) {
                 localStorage.setItem('user', JSON.stringify(payload.user));
             }
+            return Object.assign(state, payload);
+        case SINGLEUSER:
             return Object.assign(state, payload);
         default:
             return state;
