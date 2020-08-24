@@ -214,7 +214,7 @@ class Friends extends Component {
                                                     }
                                                     subheader={
                                                         <div>
-                                                           Last seen:{new Date(item.updatedAt).toLocaleTimeString() }
+                                                            Last seen:{new Date(item.updatedAt).toLocaleTimeString()}
                                                         </div>
                                                     }
                                                 />
@@ -225,111 +225,116 @@ class Friends extends Component {
                             </div>
                         </Grid>
                         <Grid item sm={9}>
-                            {!this.state.selectFriend ?
-                                <div>
-                                    <h1>Click on any friend to start conversation.</h1>
-                                </div>
-                                :
-                                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                    <AppBar position="relative" style={{ background: "#37474f" }}>
-                                        <Toolbar>
-                                            <Typography variant="h6" className="title" noWrap>
-                                                <CardHeader
-                                                    avatar={
-                                                        <Avatar alt="user" src={this.state.selectFriend.photoURL || userimage} />
-                                                    }
-                                                    title={this.state.selectFriend.firstName + ' ' + this.state.selectFriend.lastName}
-                                                    subheader={
-                                                        <div className="time">Last seen:{new Date(this.state.selectFriend.updatedAt).toLocaleTimeString() + ' ' + new Date(this.state.selectFriend.updatedAt).toLocaleDateString()}
-                                                        </div>
-                                                    }
-                                                />
-                                            </Typography>
-                                            <Tooltip title="Share documents" aria-label="add">
-                                                <Fab size="small" style={{ marginRight: "8px" }}>
-                                                    <input accept="image/*,video/*,application/pdf" className='input' id="icon-button-file" type="file" onChange={this.onChangeHandler} />
-                                                    <label htmlFor="icon-button-file" >
-                                                        <IconButton type="file" aria-label="upload picture" component="span">
-                                                            <AttachmentIcon />
-                                                        </IconButton>
-                                                    </label>
-                                                </Fab>
-                                            </Tooltip>
-                                        </Toolbar>
-                                    </AppBar>
-                                    <div className="chat-box">
-                                        <Grid className="messages">
-                                            {this.state.loading && <div className="loader"><CircularProgress /></div>}
-                                            {this.state.messages.map(item => (
-                                                <Grid item xs={12} key={item._id} style={{ padding: '8px' }} ref={this.messageRef}>
-                                                    <div className="message">
-                                                        <Avatar className="message-photo" src={item.photoURL || userimage} alt="message" />
-                                                        <div className="message-name">{item.name}</div>
-                                                    </div>
-                                                    {item.file ?
-                                                        <>
-                                                            {item?.type.indexOf('video') !== -1 ?
-                                                                <video width="320" height="240" controls autoPlay>
-                                                                    <source src={`/uploads/${item.file}`} type={item.type} />
-                                                                </video>
-                                                                :
-                                                                item?.type.indexOf('pdf') !== -1 || item?.type.indexOf('text') !== -1 ?
-                                                                    <div className="message-content">
-                                                                        <a className="send-link" target="_blank" rel="noopener noreferrer" href={"/uploads/" + item.file}>{item.fileName || 'open pdf'}</a>
-                                                                    </div>
-                                                                    :
-                                                                    <img className="message-file" src={`/uploads/${item.file}`} alt={item.file} />
-                                                            }
-                                                        </>
-                                                        :
-                                                        <div className="message-content">{item.message}</div>
-                                                    }
-                                                </Grid>
-                                            ))}
-                                        </Grid>
-                                        <form className="message-form" onSubmit={this.sendMessage}>
-                                            <Grid container>
-                                                <Grid item xs={1} sm={1}>
-                                                    <div>
-                                                        <ClickAwayListener onClickAway={this.handleClickAwayEmoji}>
-                                                            <div>
-                                                                <InsertEmoticonIcon onClick={this.handleClickEmoji} style={{ cursor: "pointer" }} />
-                                                                {this.state.openemoji ? (
-                                                                    <Portal>
-                                                                        <div className="emoji-class">
-                                                                            <Picker onEmojiClick={this.onEmojiClick} />
-                                                                        </div>
-                                                                    </Portal>
-                                                                ) : null}
+                            <div>
+                                {!this.state.selectFriend ?
+                                    <div>
+                                        {this.state.friends.length === 0 ?
+                                            <h1>You don't have any friend.</h1>
+                                           : <h1>Click on any friend to start conversation.</h1>
+                                        }
+                                    </div>
+                                    :
+                                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                        <AppBar position="relative" style={{ background: "#37474f" }}>
+                                            <Toolbar>
+                                                <Typography variant="h6" className="title" noWrap>
+                                                    <CardHeader
+                                                        avatar={
+                                                            <Avatar alt="user" src={this.state.selectFriend.photoURL || userimage} />
+                                                        }
+                                                        title={this.state.selectFriend.firstName + ' ' + this.state.selectFriend.lastName}
+                                                        subheader={
+                                                            <div className="time">Last seen:{new Date(this.state.selectFriend.updatedAt).toLocaleTimeString() + ' ' + new Date(this.state.selectFriend.updatedAt).toLocaleDateString()}
                                                             </div>
-                                                        </ClickAwayListener>
-                                                    </div>
-                                                </Grid>
-                                                <Grid item xs={9} sm={10}>
-                                                    <TextField
-                                                        fullWidth
-                                                        name="message"
-                                                        variant="outlined"
-                                                        autoComplete="off"
-                                                        size="small"
-                                                        value={this.state.message}
-                                                        onChange={(e) => this.setState({ message: e.target.value })}
+                                                        }
                                                     />
-                                                </Grid >
-                                                <Grid item xs={2} sm={1}>
-                                                    <Fab style={{
-                                                        width: "40px",
-                                                        height: "40px"
-                                                    }} type="submit"><SendIcon /></Fab>
-                                                </Grid>
+                                                </Typography>
+                                                <Tooltip title="Share documents" aria-label="add">
+                                                    <Fab size="small" style={{ marginRight: "8px" }}>
+                                                        <input accept="image/*,video/*,application/pdf" className='input' id="icon-button-file" type="file" onChange={this.onChangeHandler} />
+                                                        <label htmlFor="icon-button-file" >
+                                                            <IconButton type="file" aria-label="upload picture" component="span">
+                                                                <AttachmentIcon />
+                                                            </IconButton>
+                                                        </label>
+                                                    </Fab>
+                                                </Tooltip>
+                                            </Toolbar>
+                                        </AppBar>
+                                        <div className="chat-box">
+                                            <Grid className="messages">
+                                                {this.state.loading && <div className="loader"><CircularProgress /></div>}
+                                                {this.state.messages.map(item => (
+                                                    <Grid item xs={12} key={item._id} style={{ padding: '8px' }} ref={this.messageRef}>
+                                                        <div className="message">
+                                                            <Avatar className="message-photo" src={item.photoURL || userimage} alt="message" />
+                                                            <div className="message-name">{item.name}</div>
+                                                        </div>
+                                                        {item.file ?
+                                                            <>
+                                                                {item?.type.indexOf('video') !== -1 ?
+                                                                    <video width="320" height="240" controls autoPlay>
+                                                                        <source src={`/uploads/${item.file}`} type={item.type} />
+                                                                    </video>
+                                                                    :
+                                                                    item?.type.indexOf('pdf') !== -1 || item?.type.indexOf('text') !== -1 ?
+                                                                        <div className="message-content">
+                                                                            <a className="send-link" target="_blank" rel="noopener noreferrer" href={"/uploads/" + item.file}>{item.fileName || 'open pdf'}</a>
+                                                                        </div>
+                                                                        :
+                                                                        <img className="message-file" src={`/uploads/${item.file}`} alt={item.file} />
+                                                                }
+                                                            </>
+                                                            :
+                                                            <div className="message-content">{item.message}</div>
+                                                        }
+                                                    </Grid>
+                                                ))}
                                             </Grid>
-                                        </form>
+                                            <form className="message-form" onSubmit={this.sendMessage}>
+                                                <Grid container>
+                                                    <Grid item xs={1} sm={1}>
+                                                        <div>
+                                                            <ClickAwayListener onClickAway={this.handleClickAwayEmoji}>
+                                                                <div>
+                                                                    <InsertEmoticonIcon onClick={this.handleClickEmoji} style={{ cursor: "pointer" }} />
+                                                                    {this.state.openemoji ? (
+                                                                        <Portal>
+                                                                            <div className="emoji-class">
+                                                                                <Picker onEmojiClick={this.onEmojiClick} />
+                                                                            </div>
+                                                                        </Portal>
+                                                                    ) : null}
+                                                                </div>
+                                                            </ClickAwayListener>
+                                                        </div>
+                                                    </Grid>
+                                                    <Grid item xs={9} sm={10}>
+                                                        <TextField
+                                                            fullWidth
+                                                            name="message"
+                                                            variant="outlined"
+                                                            autoComplete="off"
+                                                            size="small"
+                                                            value={this.state.message}
+                                                            onChange={(e) => this.setState({ message: e.target.value })}
+                                                        />
+                                                    </Grid >
+                                                    <Grid item xs={2} sm={1}>
+                                                        <Fab style={{
+                                                            width: "40px",
+                                                            height: "40px"
+                                                        }} type="submit"><SendIcon /></Fab>
+                                                    </Grid>
+                                                </Grid>
+                                            </form>
+
+                                        </div>
 
                                     </div>
 
-                                </div>
-
-                            }
+                                }
+                            </div>
 
                         </Grid>
                     </Grid>

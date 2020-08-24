@@ -5,7 +5,7 @@ import forgotPassword from './components/forgotPassword';
 import Home from './page/home';
 //import Header from './components/header';
 import Profile from './page/profile';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { HashRouter, Route } from 'react-router-dom';
 import resetPassword from './components/resetpassword';
 import Friends from './page/friend';
 import Groups from './page/group';
@@ -14,7 +14,7 @@ class App extends Component {
     render() {
         return (
             <div>
-                <BrowserRouter>
+                <HashRouter>
                     <Route path="/" component={Home} exact />
                     <Route path="/login" component={Login} exact />
                     <Route path="/register" component={Register} exact />
@@ -24,7 +24,7 @@ class App extends Component {
                     <Route path="/friend" component={Friends} exact />
                     <Route path="/group" component={Groups} exact />
                     <Route path="/user/:id" component={Details} />
-                </BrowserRouter>
+                </HashRouter>
             </div>
         )
     }

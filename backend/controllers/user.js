@@ -65,13 +65,13 @@ module.exports = {
     async getallUser(req, res) {
         try {
             var result = await User.find();
-            const user = result.find(u=>u._id == req.user.id);
-             let filteredUser = result;
-            if(user.friends && user.friends.length > 0){
+            const user = result.find(u => u._id == req.user.id);
+            let filteredUser = result;
+            if (user.friends && user.friends.length > 0) {
                 user.friends.push(user._id);
-                filteredUser = result.filter((r)=>!user.friends.includes(r._id))
+                filteredUser = result.filter((r) => !user.friends.includes(r._id))
             }
-             res.json(filteredUser)
+            res.json(filteredUser)
         } catch (error) {
             console.log(error)
             res.status(400).send(error)
@@ -89,20 +89,21 @@ module.exports = {
         }
     },
     async updateUser(req, res) {
+        console.log(req.body)
         try {
-            
-            if (req.file.path){
-             await User.updateOne(
-                    {_id: req.params.id },
-                    {$set:{photoURL: req.file.path}});
-             }  
-          return res.json({photoURL:req.file.path})
+            console.log(req.file)
+            if (req.file && req.file.path) {
+                await User.updateOne(
+                    { _id: req.params.id },
+                    { $set: { photoURL: req.file.path } });
+            }
+            return res.json({ photoURL: req.file ? req.file.path : null })
         } catch (error) {
             console.log(error)
             return res.status(404).json(error)
-       }
+        }
     },
-    
+
     async forgotPassword(req, res) {
         try {
             var email = req.body.email;

@@ -12,6 +12,8 @@ import { updateUser } from '../redux/action/user';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import { Backdrop, CircularProgress } from '@material-ui/core';
+import DeleteIcon from '@material-ui/icons/Delete';
+import Tooltip from '@material-ui/core/Tooltip';
 
 const useStyles = makeStyles((theme) => ({
   input: {
@@ -28,11 +30,11 @@ const Profile = (props) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const [state, setState] = useState({
-    userId: props.user.id,
-    token: props.user.token,
-    firstName: props.user.firstName,
-    lastName: props.user.lastName,
-    email: props.user.email,
+    userId: props?.user.id,
+    token: props?.user.token,
+    firstName: props?.user.firstName,
+    lastName: props?.user.lastName,
+    email: props?.user.email,
     isSubmitting: false,
     photoURL: null
 
@@ -43,6 +45,7 @@ const Profile = (props) => {
     setState(newState);
   }
   const handleSubmit = async (e) => {
+    console.log(state.photoURL)
     e.preventDefault();
     if (!state.photoURL) {
       return
@@ -93,10 +96,18 @@ const Profile = (props) => {
                 className={classes.input}
                 onChange={(e) => handleChange("photoURL", e.target.files[0])} />
               <label htmlFor="icon-button-file">
-                <IconButton color="primary" aria-label="upload picture" component="span">
-                  <PhotoCamera />
-                </IconButton>
+                <Tooltip title="Upload Photo">
+                  <IconButton color="primary" aria-label="upload picture" component="span">
+                    <PhotoCamera />
+                  </IconButton>
+                </Tooltip>
               </label>
+              <Tooltip title="Remove Photo">
+                <IconButton color="secondary" aria-label="upload picture" component="span" disabled={state.isSubmitting}
+                  onClick={removeImage}>
+                  <DeleteIcon />
+                </IconButton>
+              </Tooltip>
             </Grid>
             <Button
               type="submit"
@@ -107,18 +118,12 @@ const Profile = (props) => {
               Update Photo
           </Button>
           </form>
-          <Grid>
-            <Button
-              type="submit"
-              style={{ marginTop: "10px" }}
-              variant="contained"
-              color="primary"
-              disabled={state.isSubmitting}
-              onClick={removeImage}
-            >
-              Remove Photo
-          </Button>
-          </Grid>
+          {/* <Grid>
+            <IconButton color="primary" aria-label="upload picture" component="span" disabled={state.isSubmitting}
+              onClick={removeImage}>
+              <DeleteIcon />
+            </IconButton>
+          </Grid> */}
 
         </Container>
         <h3>

@@ -150,7 +150,7 @@ const Group = (props) => {
     const handleClickOpen = () => {
         setOpen(true);
     };
-    const socket = io("http://localhost:3000");
+    const socket = io("/");
 
     const handleClose = () => {
         setOpen(false);
@@ -366,9 +366,13 @@ const Group = (props) => {
                     <Grid item sm={9} >
                         {!state.selectedGroup ?
                             <div>
-                                <h1>
-                                    Click on any group for chatting.
+                                {props.group.groups.length === 0 ?
+                                    <h1>you don't have any group.</h1>
+                                    :
+                                    <h1>
+                                        Click on any group for chatting.
                             </h1>
+                                }
                             </div>
                             :
                             <div style={{ display: 'flex', flexDirection: 'column' }}>

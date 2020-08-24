@@ -65,8 +65,8 @@ export default function SignIn() {
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
-      <Typography component="h1" variant="h5">
-        <img src={Ouricon} alt="user" style={{width:"100%"}}/>
+        <Typography component="h1" variant="h5">
+          <img src={Ouricon} alt="user" style={{ width: "100%" }} />
         </Typography>
         <Typography component="h1" variant="h5">
           Sign in
@@ -99,7 +99,7 @@ export default function SignIn() {
             onChange={(e) => handleChange("password", e.target.value)}
           />
           <Grid item xs style={{ float: "right" }}>
-            <Link href="/forgotPassword" variant="body2">
+            <Link href="/#/forgotPassword" variant="body2">
               Forgot password?
               </Link>
           </Grid>
@@ -121,7 +121,7 @@ export default function SignIn() {
           <Grid container justify="center" className="mt-2">
             <Grid item >
               Don't have an account?
-              <Link href="/register" variant="body2" className="mt-2">
+              <Link href="/#/register" variant="body2" className="mt-2">
                 {"Sign Up"}
               </Link>
             </Grid>

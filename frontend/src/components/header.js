@@ -149,14 +149,16 @@ const useStyles = makeStyles((theme) => ({
     },
     dropdown: {
         position: 'absolute',
-        top: 28,
         right: 0,
         left: 0,
         zIndex: 1,
+        padding:'8px',
         border: '1px solid',
-        padding: theme.spacing(1),
-        backgroundColor: "grey",
-        color: "black"
+        // padding: theme.spacing(1),
+        backgroundColor: "#3f51b5",
+        color: "black",
+        borderBottomLeftRadius:"8px",
+        borderBottomRightRadius:"8px"
     },
 
 }));

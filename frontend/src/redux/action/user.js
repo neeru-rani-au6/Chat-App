@@ -50,6 +50,7 @@ export const registerUser = (user) => async dispatch => {
 export const updateUser = (user) => async dispatch => {
     console.log(user)
     try {
+        axios.defaults.withCredentials = true;
         const formData = new FormData();
         formData.append("firstName", user.firstName);
         formData.append("lastName", user.lastName);
@@ -81,11 +82,11 @@ export const updateUser = (user) => async dispatch => {
         })
 
     } catch (error) {
-        //console.log('adsfasdf', error.response)
+        console.log('adsfasdf', error.response)
         dispatch({
             type: UPDATEUSER,
             payload: {
-                error: error.response.data.message,
+                error: error.response ? error.response.data.message : "photo error",
                 info: null
             }
         })

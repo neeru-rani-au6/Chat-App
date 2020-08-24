@@ -35,6 +35,9 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  input: {
+    marginBottom: "20px"
+  },
 }));
 
 export default function Register() {
@@ -124,7 +127,7 @@ export default function Register() {
     newState.isSubmitting = true;
     setState(newState);
     if (!user.error) {
-      history.push('/');
+      history.push('/login');
     }
   }
   // useEffect(() => {
@@ -235,7 +238,7 @@ export default function Register() {
           <Grid container justify="center" className="mt-2">
             <Grid item>
               Already have an account?
-              <Link href="/login" variant="body2">
+              <Link href="/#/login" variant="body2">
                 Sign in
               </Link>
             </Grid>

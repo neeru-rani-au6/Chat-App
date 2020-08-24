@@ -64,7 +64,7 @@ const Resetpassword = (props) => {
         await dispatch(changePassword(state));
         setState({ ...state, isSubmitting: false });
         if (!props.user.error) {
-            history.push('/');
+            history.push('/login');
         }
     }
     return (

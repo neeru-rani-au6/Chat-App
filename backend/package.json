@@ -31,8 +31,8 @@
   "main": "app.js",
   "author": "neeru",
   "license": "ISC",
-  "description": "",
   "devDependencies": {
     "nodemon": "^2.0.4"
-  }
+  },
+  "description": ""
 }
