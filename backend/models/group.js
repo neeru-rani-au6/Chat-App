@@ -1,6 +1,7 @@
 let mongoose = require("mongoose");
 let Schema = mongoose.Schema;
 
+// group chat.
 var group = new Schema({
     groupName: {
         type: String,

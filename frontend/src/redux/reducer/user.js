@@ -38,8 +38,9 @@ const userReducer = (state = initalstate, action) => {
             // console.log(newState1)
             return newState1
         case UPDATEUSER:
-            const user = { ...state.user, photoURL: payload.photoURL }
-            console.log(payload)
+            const user = { ...state.user, photoURL: payload.photoURL, firstName: payload.firstName, lastName: payload.lastName }
+            //console.log(payload)
+            //console.log(user)
             localStorage.setItem('user', JSON.stringify(user));
             return { ...state, user };
         case CHANGEPASSWORD:

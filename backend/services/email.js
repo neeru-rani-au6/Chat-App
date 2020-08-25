@@ -1,6 +1,7 @@
 "use strict";
 const nodemailer = require("nodemailer");
 
+// this is for send mail in user email by useing nodemailer.
 async function sendMail(data) {
     let transporter = nodemailer.createTransport({
         host: 'smtp.gmail.com',

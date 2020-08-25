@@ -77,7 +77,9 @@ export const updateUser = (user) => async dispatch => {
             payload: {
                 error: null,
                 info: data,
-                photoURL: data.photoURL
+                photoURL: data.photoURL,
+                firstName: data.firstName,
+                lastName: data.lastName
             }
         })
 
@@ -86,7 +88,7 @@ export const updateUser = (user) => async dispatch => {
         dispatch({
             type: UPDATEUSER,
             payload: {
-                error: error.response ? error.response.data.message : "photo error",
+                error: error.response ? error.response.data.message : "update error",
                 info: null
             }
         })

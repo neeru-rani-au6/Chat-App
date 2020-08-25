@@ -6,7 +6,9 @@ const validator = require('validator');
 module.exports = {
     async userRegister(req, res) {
         //console.log(req.body)
+        // this is for register the user.
         try {
+            // there we check user user provide photo or not.
             if (req.file && req.file.path) {
                 req.body.photoURL = req.file.path;
             }
@@ -22,7 +24,9 @@ module.exports = {
         }
     },
     async userLogin(req, res) {
+        // this is for login user.
         try {
+            // there we check email and password is write or not.
             const email = req.body.email;
             const password = req.body.password;
             const user = await User.findOne({ email });
@@ -34,6 +38,7 @@ module.exports = {
                 return res.status(404).json({ error: "Invalid Password" });
             }
             var token = await createToken(user);
+            // there we save all data in cookie.
             res.cookie('token', token);
             return res.json({
                 firstName: user.firstName,
@@ -53,7 +58,9 @@ module.exports = {
         }
     },
     async userLogout(req, res) {
+        // this is for logout the user.
         try {
+            // there we clear all data in cookie.
             res.cookie('token', { expires: Date.now() });
             return res.json({ message: "logged out" })
         } catch (error) {
@@ -63,9 +70,11 @@ module.exports = {
         }
     },
     async getallUser(req, res) {
+        // this is for get all user data.
         try {
             var result = await User.find();
             const user = result.find(u => u._id == req.user.id);
+            // there we fillter all friend for particular user.
             let filteredUser = result;
             if (user.friends && user.friends.length > 0) {
                 user.friends.push(user._id);
@@ -79,6 +88,7 @@ module.exports = {
         }
     },
     async getoneUser(req, res) {
+        // this is for get one user data by id.
         try {
             var result = await User.findOne({ _id: req.params.id }).populate('friends').populate('group').exec()
             res.json(result);
@@ -89,15 +99,17 @@ module.exports = {
         }
     },
     async updateUser(req, res) {
+        // this is for update user data.
         console.log(req.body)
         try {
             console.log(req.file)
+            // there we update user photo fristName,lastName.
             if (req.file && req.file.path) {
                 await User.updateOne(
                     { _id: req.params.id },
-                    { $set: { photoURL: req.file.path } });
+                    { $set: { photoURL: req.file.path, firstName: req.body.firstName, lastName: req.body.lastName } });
             }
-            return res.json({ photoURL: req.file ? req.file.path : null })
+            return res.json({ photoURL: req.file ? req.file.path : null, firstName: req.body.firstName, lastName: req.body.lastName })
         } catch (error) {
             console.log(error)
             return res.status(404).json(error)
@@ -105,11 +117,15 @@ module.exports = {
     },
 
     async forgotPassword(req, res) {
+        // this is for forgot password.
         try {
             var email = req.body.email;
+            // there we create token for send on email.
             var token = Math.floor((Math.random() * 1000000) + 1);
+            // there we find email.
             var user = await User.findOne({ email })
             if (user) {
+                // there we send token on email.
                 await sendMail({
                     to: email,
                     subject: 'Forgot Password',
@@ -131,6 +147,7 @@ module.exports = {
         }
     },
     async Changepassword(req, res) {
+        // this is for change password.
         try {
             const resetToken = req.body.resetToken;
             const email = req.body.email;
@@ -154,6 +171,7 @@ module.exports = {
         }
     },
     async searchUser(req, res) {
+        // this is for search a user by id.
         try {
             console.log(req.body)
             var result = await User.find({ $or: [{ firstName: { "$regex": req.body.searchQuery, "$options": "i" } }, { lastName: { "$regex": req.body.searchQuery, "$options": "i" } }] }, { firstName: 1, lastName: 1 });
@@ -164,6 +182,7 @@ module.exports = {
         }
     },
     async findFriends(req, res) {
+        // this is for find friend.
         try {
             if (req.user.id) {
                 var result = await User.findOne({ _id: req.user.id }, { friends: 1, _id: 0 }).populate("friends").exec();

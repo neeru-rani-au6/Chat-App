@@ -3,6 +3,7 @@ const User = require("../models/user");
 
 module.exports = {
     async createGroup(req, res) {
+        // this is for create group and we add owner id .
         try {
             const result = await Group.create({ ...req.body, owner: req.user.id })
             console.log(result)
@@ -17,6 +18,7 @@ module.exports = {
 
     },
     async findGroup(req, res) {
+        // this is for find all group for particular user.
         try {
             var result = await Group.find({ $or: [{ owner: req.user.id }, { member: req.user.id }] });
             return res.json(result)

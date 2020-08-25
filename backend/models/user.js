@@ -1,5 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+
+// User model.
 var User = new Schema({
     firstName: {
         type: String,
@@ -7,7 +9,7 @@ var User = new Schema({
         trim: true,
         validate: /[a-z]/,
         min: [4, 'firstName must be atleast 4 character long '],
-        required: [true,"FirstName is required"]
+        required: [true, "FirstName is required"]
     },
     lastName: {
         type: String,
@@ -45,7 +47,7 @@ var User = new Schema({
             ref: "group",
         }
     ],
-    socketId:String
+    socketId: String
 
 }, { timestamps: true });
 

@@ -1,6 +1,6 @@
 let mongoose = require("mongoose");
 let Schema = mongoose.Schema;
-
+//chat model.
 var chat = new Schema(
     {
         sender: {
@@ -21,7 +21,7 @@ var chat = new Schema(
             trim: true
         },
         file: String,
-        fileName:String,
+        fileName: String,
         name: String,
         type: String,
         photoURL: String

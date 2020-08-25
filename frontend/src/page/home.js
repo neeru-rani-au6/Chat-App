@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { allUser } from '../redux/action/user';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
-import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -14,8 +13,6 @@ import { Paper } from '@material-ui/core';
 import { sendRequest, allRequest, updatetRequest } from '../redux/action/request';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
-import CheckIcon from '@material-ui/icons/Check';
-import ClearIcon from '@material-ui/icons/Clear';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 class Home extends Component {
@@ -121,7 +118,7 @@ class Home extends Component {
                 {this.state.users ?
                     <div className="row">
                         <Grid container >
-                            <Grid container item spacing={3} xs={12} sm={9}>
+                            <Grid container item spacing={3} xs={12} sm={12} md={8}>
                                 {this.state.users && this.state.users.map((item) => (
                                     <Grid item xs={12} sm={4} key={item._id}>
                                         <Card style={{ maxWidth: "200px" }} className="col-2">
@@ -143,57 +140,70 @@ class Home extends Component {
                                 ))}
 
                             </Grid>
-                            <Grid item xs={12} sm={3}>
-                                <Paper style={{ padding: '5px 5px 20px 5px' }}>
-                                    <div style={{ textAlign: "center", maxWidth: "300px" }} >
+                            <Grid item xs={12} sm={12} md={4}>
+                                <Paper style={{ padding: '1rem' }}>
+                                    <div style={{ textAlign: "center" }} >
                                         <h3>Requests</h3>
                                         {this.props.request.requests.length > 0 ?
                                             <div>
                                                 {
                                                     this.props.request.requests && this.props.request.requests.map((item) => (
-                                                        <Card style={{ display: "flex", margin: "10px" }} key={item._id}>
+                                                        <Paper key={item._id} style={{ margin: "10px", padding: "0 10px" }} >
                                                             {item.sender &&
-                                                                <>
-                                                                    <Grid item xs={3} style={{ float: "left" }}>
+                                                                <Grid container spacing={1} justify="space-between" alignItems="center">
+                                                                    <Grid item >
                                                                         <img alt="user" src={item.sender.photoURL || userimage} style={{ width: "40px", height: "40px", borderRadius: "50px" }} />
                                                                     </Grid>
-                                                                    <Grid item xs={3} style={{ float: "right", marginTop: "10px" }}>
+                                                                    <Grid item >
                                                                         {item.sender.firstName + " " + item.sender.lastName}
                                                                     </Grid>
 
-                                                                    <Grid item xs={3} style={{ float: "right", marginTop: "5px" }}>
-                                                                        <IconButton aria-label="delete" color="primary" onClick={() => this.Accept(item._id, item.sender._id)}>
+                                                                    <Grid item >
+                                                                        {/* <IconButton aria-label="delete" color="primary" onClick={() => this.Accept(item._id, item.sender._id)}>
                                                                             <CheckIcon />
-                                                                        </IconButton>
+                                                                        </IconButton> */}
+                                                                        <Button size="small" color="primary" className="request-btn" variant="contained" onClick={() => this.Accept(item._id, item.sender._id)}>
+                                                                            Accept
+                                                                        </Button>
                                                                     </Grid>
-                                                                    <Grid item xs={3} style={{ float: "right", marginTop: "5px" }}>
-                                                                        <IconButton aria-label="delete" color="secondary" onClick={() => this.Reject(item._id)}>
+                                                                    <Grid item >
+                                                                        {/* <IconButton aria-label="delete" color="secondary" onClick={() => this.Reject(item._id)}>
                                                                             <ClearIcon />
-                                                                        </IconButton>
+                                                                        </IconButton> */}
+                                                                        <Button size="small" className="request-btn" color="secondary" variant="contained" onClick={() => this.Reject(item._id)}>
+                                                                            Reject
+                                                                        </Button>
                                                                     </Grid>
-                                                                </>
+                                                                </Grid>
                                                             }
                                                             {item.groupId &&
-                                                                <>
-                                                                    <Grid item xs={3} style={{ float: "left" }}>
+                                                                <Grid container spacing={1} justify="space-between" alignItems="center">
+
+                                                                    <Grid item >
                                                                         <img alt="user" src={item.groupId.photoURL || userimage} style={{ width: "40px", height: "40px", borderRadius: "50px" }} />
                                                                     </Grid>
-                                                                    <Grid item xs={3} style={{ float: "right", marginTop: "10px" }}>
+                                                                    <Grid item >
                                                                         {item.groupId.groupName}
                                                                     </Grid>
-                                                                    <Grid item xs={3} style={{ float: "right", marginTop: "5px" }}>
-                                                                        <IconButton aria-label="delete" color="primary" onClick={() => this.acceptGroupRequest(item._id, item.groupId._id)}>
+                                                                    <Grid item >
+                                                                        {/* <IconButton aria-label="delete" color="primary" onClick={() => this.acceptGroupRequest(item._id, item.groupId._id)}>
                                                                             <CheckIcon />
-                                                                        </IconButton>
+                                                                        </IconButton> */}
+                                                                        <Button size="small" color="primary" variant="contained" onClick={() => this.acceptGroupRequest(item._id, item.groupId._id)}>
+                                                                            Accept
+                                                                        </Button>
                                                                     </Grid>
-                                                                    <Grid item xs={3} style={{ float: "right", marginTop: "5px" }}>
-                                                                        <IconButton aria-label="delete" color="secondary" onClick={() => this.Reject(item._id)}>
+                                                                    <Grid item >
+                                                                        {/* <IconButton aria-label="delete" color="secondary" onClick={() => this.Reject(item._id)}>
                                                                             <ClearIcon />
-                                                                        </IconButton>
+                                                                        </IconButton> */}
+                                                                        <Button size="small" color="secondary" variant="contained" onClick={() => this.Reject(item._id)}>
+                                                                            Reject
+                                                                        </Button>
                                                                     </Grid>
-                                                                </>
+                                                                </Grid>
                                                             }
-                                                        </Card>
+                                                        </Paper>
                                                     ))
                                                 }
                                             </div>

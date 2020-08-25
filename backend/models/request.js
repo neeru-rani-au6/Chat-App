@@ -1,6 +1,7 @@
 let mongoose = require("mongoose");
 let Schema = mongoose.Schema;
 
+// Request model.
 var Request = new Schema(
     {
         sender:

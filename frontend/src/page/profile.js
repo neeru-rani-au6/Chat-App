@@ -3,6 +3,7 @@ import Header from '../components/header';
 import IconButton from '@material-ui/core/IconButton';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import TextField from '@material-ui/core/TextField';
 import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
@@ -45,9 +46,9 @@ const Profile = (props) => {
     setState(newState);
   }
   const handleSubmit = async (e) => {
-    console.log(state.photoURL)
+    console.log(state)
     e.preventDefault();
-    if (!state.photoURL) {
+    if (!state.photoURL && !state.firstName && !state.lastName) {
       return
     }
     const newState = { ...state };
@@ -86,10 +87,20 @@ const Profile = (props) => {
               </span>
           }
         </div>
+
         <Container component="main" maxWidth="xs">
           <CssBaseline />
+          <Tooltip title="Remove Photo">
+            <IconButton color="secondary" aria-label="upload picture" component="span" disabled={state.isSubmitting}
+              onClick={removeImage}>
+              <DeleteIcon />
+            </IconButton>
+          </Tooltip>
+          <h3>wish to update details..</h3>
+          <h3>Please edit Below..</h3>
+
           <form onSubmit={handleSubmit} noValidate>
-            <Grid>
+            <Grid item xs={12}>
               <input accept="image/*"
                 id="icon-button-file"
                 type="file"
@@ -102,29 +113,48 @@ const Profile = (props) => {
                   </IconButton>
                 </Tooltip>
               </label>
-              <Tooltip title="Remove Photo">
-                <IconButton color="secondary" aria-label="upload picture" component="span" disabled={state.isSubmitting}
-                  onClick={removeImage}>
-                  <DeleteIcon />
-                </IconButton>
-              </Tooltip>
+            </Grid>
+            <Grid container spacing={2}>
+              <Grid item xs={12} >
+                <TextField
+                  autoComplete="fname"
+                  name="firstName"
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="firstName"
+                  label="First Name"
+                  value={state.firstName}
+                  onChange={(e) => handleChange("firstName", e.target.value)}
+                  error={!!state.firstNameError}
+                  helperText={state.firstNameError}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="lastName"
+                  label="Last Name"
+                  name="lastName"
+                  autoComplete="lname"
+                  value={state.lastName}
+                  onChange={(e) => handleChange("lastName", e.target.value)}
+                  error={!!state.lastNameError}
+                  helperText={state.lastNameError}
+                />
+              </Grid>
             </Grid>
             <Button
               type="submit"
               variant="contained"
               color="primary"
-              disabled={state.isSubmitting}
-            >
-              Update Photo
+              style={{margin:"10px"}}
+              disabled={state.isSubmitting}>
+              Update Details
           </Button>
           </form>
-          {/* <Grid>
-            <IconButton color="primary" aria-label="upload picture" component="span" disabled={state.isSubmitting}
-              onClick={removeImage}>
-              <DeleteIcon />
-            </IconButton>
-          </Grid> */}
-
         </Container>
         <h3>
           Name: {props.user.firstName + " " + props.user.lastName}

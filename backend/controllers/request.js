@@ -5,8 +5,10 @@ const User = require("../models/user");
 const Group = require("../models/group");
 module.exports = {
     async sendRequest(req, res) {
+        // this is for send request for single and group both.
         try {
             let query = { receiver: req.body.receiver };
+            // there we check request for single chat or group chat.
             if (req.body.groupId) {
                 query.groupId = req.body.groupId;
             }
@@ -28,6 +30,7 @@ module.exports = {
         }
     },
     async getAllRequest(req, res) {
+        // this is for find all request for particular user.
         try {
             var result = await request.find({ receiver: req.user.id, isAccepted: false, isReject: false }, { sender: 1, groupId: 1 }).populate('sender', ['firstName', 'lastName', 'photoURL']).populate('groupId', ['photoURL', 'groupName']).exec();
             res.json(result)
@@ -37,9 +40,12 @@ module.exports = {
         }
     },
     async updateRequest(req, res) {
+        // this is for update request when user accept and reject request.
         console.log(req.body)
         try {
             await Request.updateOne({ _id: req.body.id }, { ...req.body })
+            // there we check user accept the request or not .
+            // when user accept the request update user data and when reject the request update request data.
             if (req.body.isAccepted === true) {
                 console.log(req.body);
                 let query = [];
@@ -63,8 +69,9 @@ module.exports = {
         }
     },
     async findFriends(req, res) {
+        // this is for find all friend for particular user.
         try {
-            var result = await User.findOne({ _id: req.user.id }, { friends: 1, _id: 0 }).populate("friends", ['firstName', 'lastName', 'createdAt', 'photoURL','socketId']).exec();
+            var result = await User.findOne({ _id: req.user.id }, { friends: 1, _id: 0 }).populate("friends", ['firstName', 'lastName', 'createdAt', 'photoURL', 'socketId']).exec();
             res.json(result)
         } catch (error) {
             console.log(error)
