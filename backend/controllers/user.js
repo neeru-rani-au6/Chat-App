@@ -95,9 +95,10 @@ module.exports = {
             if (req.file && req.file.path) {
                 await User.updateOne(
                     { _id: req.params.id },
-                    { $set: { photoURL: req.file.path } });
+                    { $set: { photoURL: req.file.path,firstName:req.body.firstName,lastName:req.body.lastName } });
             }
-            return res.json({ photoURL: req.file ? req.file.path : null })
+            
+            return res.json({ photoURL: req.file ? req.file.path : null,firstName:req.body.firstName,lastName:req.body.lastName })
         } catch (error) {
             console.log(error)
             return res.status(404).json(error)
