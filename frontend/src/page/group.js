@@ -150,7 +150,7 @@ const Group = (props) => {
     const handleClickOpen = () => {
         setOpen(true);
     };
-    const socket = io("http://localhost:3000");
+    const socket = io("/");
 
     const handleClose = () => {
         setOpen(false);
@@ -471,7 +471,7 @@ const Group = (props) => {
                                                             item?.type.indexOf('image') !== -1 ?
                                                                 <img className="message-file" src={`/uploads/${item.file}`} alt={item.file} />
                                                                 : <div className="message-content">
-                                                                    <a className="send-link" target="_blank" rel="noopener noreferrer" href={"http://localhost:3000/uploads/" + item.file}>{item.fileName || 'open pdf'}</a>
+                                                                    <a className="send-link" target="_blank" rel="noopener noreferrer" href={"/uploads/" + item.file}>{item.fileName || 'open pdf'}</a>
                                                                 </div>
                                                         }
                                                     </>
