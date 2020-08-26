@@ -10,9 +10,9 @@ import Container from '@material-ui/core/Container';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { registerUser } from '../redux/action/user';
- import IconButton from '@material-ui/core/IconButton';
- import PhotoCamera from '@material-ui/icons/PhotoCamera';
- import Tooltip from '@material-ui/core/Tooltip';
+import IconButton from '@material-ui/core/IconButton';
+import PhotoCamera from '@material-ui/icons/PhotoCamera';
+import Tooltip from '@material-ui/core/Tooltip';
 import Ouricon from '../assets/images/ouricon.jpg';
 
 const useStyles = makeStyles((theme) => ({
@@ -145,7 +145,7 @@ export default function Register() {
           Sign up
         </Typography>
         <form onSubmit={handleSubmit} className={classes.form} noValidate>
-           <Grid container spacing={2}>
+          <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
                 autoComplete="fname"
@@ -209,7 +209,7 @@ export default function Register() {
               />
             </Grid>
             <Grid item xs={12}>
-            <TextField accept="image/*"
+              <TextField accept="image/*"
                 id="icon-button-file"
                 type="file"
                 className={classes.input}
@@ -221,7 +221,7 @@ export default function Register() {
                   </IconButton>
                 </Tooltip>
               </label>
-              </Grid> 
+            </Grid>
             {user.error &&
               <Grid item xs={12}>
                 <div className="error">{user.error}</div>

@@ -99,23 +99,22 @@ module.exports = {
         }
     },
     async updateUser(req, res) {
-        // this is for update user data.
-        console.log(req.body)
         try {
-            console.log(req.file)
-            // there we update user photo fristName,lastName.
             if (req.file && req.file.path) {
-                await User.updateOne(
-                    { _id: req.params.id },
-                    { $set: { photoURL: req.file.path, firstName: req.body.firstName, lastName: req.body.lastName } });
+                req.body.photoURL = req.file.path;
             }
-            return res.json({ photoURL: req.file ? req.file.path : null, firstName: req.body.firstName, lastName: req.body.lastName })
+            else {
+                if (req.body.photoURL === "null") {
+                    req.body.photoURL = null;
+                }
+            }
+            await User.updateOne({ _id: req.params.id }, req.body);
+            return res.json(req.body)
         } catch (error) {
             console.log(error)
             return res.status(404).json(error)
         }
     },
-
     async forgotPassword(req, res) {
         // this is for forgot password.
         try {

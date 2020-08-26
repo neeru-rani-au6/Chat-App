@@ -48,18 +48,12 @@ export const registerUser = (user) => async dispatch => {
 }
 
 export const updateUser = (user) => async dispatch => {
-    console.log(user)
     try {
         axios.defaults.withCredentials = true;
         const formData = new FormData();
         formData.append("firstName", user.firstName);
         formData.append("lastName", user.lastName);
-        formData.append("email", user.email);
-        formData.append("password", user.password);
-        formData.append("token", user.token)
-        if (user.photoURL) {
-            formData.append("photoURL", user.photoURL, user.photoURL.name);
-        }
+        formData.append("photoURL", user.photoURL);
 
         const { data } = await axios({
             method: 'Put',
@@ -71,7 +65,6 @@ export const updateUser = (user) => async dispatch => {
             }
         }
         );
-        console.log(data, "1234")
         dispatch({
             type: UPDATEUSER,
             payload: {

@@ -31,14 +31,15 @@ const Profile = (props) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const [state, setState] = useState({
-    userId: props?.user.id,
-    token: props?.user.token,
-    firstName: props?.user.firstName,
-    lastName: props?.user.lastName,
-    email: props?.user.email,
+    userId: props?.user?.id,
+    token: props?.user?.token,
+    firstName: props?.user?.firstName,
+    lastName: props?.user?.lastName,
+    email: props?.user?.email,
     isSubmitting: false,
-    photoURL: null
-
+    removePhoto:false,
+    photoURL: props?.user?.photoURL,
+    file:null
   });
   const handleChange = (key, value) => {
     const newState = { ...state };
@@ -46,42 +47,48 @@ const Profile = (props) => {
     setState(newState);
   }
   const handleSubmit = async (e) => {
-    console.log(state)
     e.preventDefault();
     if (!state.photoURL && !state.firstName && !state.lastName) {
       return
     }
     const newState = { ...state };
+    if(newState.removePhoto){
+      newState.photoURL = null;
+    }else{
+      newState.photoURL = newState.file || newState.photoURL;
+    }
     newState.isSubmitting = true;
     setState(newState);
-    await dispatch(updateUser(state));
+    console.log(newState);
+    await dispatch(updateUser(newState));
     newState.isSubmitting = false;
-    newState.photoURL = null;
+    newState.removePhoto = false;
     setState(newState);
     if (!user.error) {
       history.push('/profile');
     }
   }
   const removeImage = async (e) => {
+    console.log(props.user);
     e.preventDefault();
     const newState = { ...state };
-    newState.isSubmitting = true;
-    setState(newState);
-    await dispatch(updateUser(state));
-    newState.isSubmitting = false;
     newState.photoURL = null;
+    newState.file = null;
+    newState.removePhoto = true;
     setState(newState);
-    if (!user.error) {
-      history.push('/profile');
-    }
+   // await dispatch(updateUser(state));
+   // newState.isSubmitting = false;
+   // if (!user.error) {
+   //   history.push('/profile');
+   // }
   }
   return props.user && (
     <div>
       <Header />
       <main className="backgrnd" style={{ marginLeft: "100px", textAlign: "center", marginTop: "50px " }} >
         <div style={{ marginBottom: "40px" }}>
-          {state.photoURL ? <img src={URL.createObjectURL(state.photoURL)} style={{ borderRadius: "50%", width: "200px", height: "200px" }} alt={props.user.firstName} />
-            : props?.user?.photoURL ? <img src={props.user.photoURL} style={{ borderRadius: "50%", width: "200px", height: "200px" }} alt={props.user.firstName} />
+          {state.file ? <img src={URL.createObjectURL(state.file)} style={{ borderRadius: "50%", width: "200px", height: "200px" }} alt={props.user.firstName} />
+            : state.photoURL ? <img src={state.photoURL} style={{ borderRadius: "50%", width: "200px", height: "200px" }} alt={props.user.firstName} />
               : <span style={{ background: "gray", borderRadius: "50%", width: "50%", height: "50%", padding: "40px", color: "#000", fontSize: "50px", textTransform: "uppercase" }}>
                 {props.user.firstName[0]}{props.user.lastName[0]}
               </span>
@@ -90,22 +97,20 @@ const Profile = (props) => {
 
         <Container component="main" maxWidth="xs">
           <CssBaseline />
-          <Tooltip title="Remove Photo">
-            <IconButton color="secondary" aria-label="upload picture" component="span" disabled={state.isSubmitting}
-              onClick={removeImage}>
-              <DeleteIcon />
-            </IconButton>
-          </Tooltip>
-          <h3>wish to update details..</h3>
-          <h3>Please edit Below..</h3>
 
           <form onSubmit={handleSubmit} noValidate>
             <Grid item xs={12}>
+              <Tooltip title="Remove Photo">
+                <IconButton color="secondary" aria-label="upload picture" component="span" disabled={state.isSubmitting}
+                  onClick={removeImage}>
+                  <DeleteIcon />
+                </IconButton>
+              </Tooltip>
               <input accept="image/*"
                 id="icon-button-file"
                 type="file"
                 className={classes.input}
-                onChange={(e) => handleChange("photoURL", e.target.files[0])} />
+                onChange={(e) => handleChange("file", e.target.files[0])} />
               <label htmlFor="icon-button-file">
                 <Tooltip title="Upload Photo">
                   <IconButton color="primary" aria-label="upload picture" component="span">
@@ -150,7 +155,7 @@ const Profile = (props) => {
               type="submit"
               variant="contained"
               color="primary"
-              style={{margin:"10px"}}
+              style={{ margin: "10px" }}
               disabled={state.isSubmitting}>
               Update Details
           </Button>
