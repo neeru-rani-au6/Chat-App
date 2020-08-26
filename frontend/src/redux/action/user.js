@@ -34,11 +34,11 @@ export const registerUser = (user) => async dispatch => {
         })
 
     } catch (error) {
-        //console.log('adsfasdf', error.response)
+        //console.log('adsfasdf', error.response.data)
         dispatch({
             type: REGISTER,
             payload: {
-                error: error.response.data.message,
+                error: error.response.data.error,
                 info: null
             }
         })

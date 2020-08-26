@@ -16,9 +16,9 @@ module.exports = {
             await User.create({ ...req.body });
             return res.json({ success: true, message: 'user register successfully' })
         } catch (error) {
-            console.log(error)
-            if (error.name === "MongoError") {
-                return res.status(400).json({ error: error.message });
+            console.log(error);
+            if (error.code === 11000) {
+                return res.status(400).json({ error: "Email Id is already exisits" });
             }
             res.status(400).send(error);
         }
