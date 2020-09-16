@@ -2,4 +2,4 @@
 
 
 ## heroku project link 
-### https://chat-app-all.herokuapp.com/#/login
+### https://chat-app-all.herokuapp.com
