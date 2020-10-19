@@ -8,7 +8,7 @@ async function sendMail(data) {
         port: 465,
         secure: true,
         auth: {
-            user: 'abc@gmail.com',
+            user: 'abc@gmail.com',   // your email and password.
             pass: 'abc',
         },
     });
